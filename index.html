@@ -17,12 +17,8 @@ html[data-theme="dark"]{
 body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','KaiTi','STKaiti',serif;transition:background .5s,color .5s}
 .wrap{max-width:560px;margin:0 auto;padding:18px 18px 60px}
 /* 开屏 */
-#splash{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:splashFade 7s ease forwards}
+#splash{position:fixed;inset:0;z-index:300;background:#f5ead6 url(splash.jpg) center/contain no-repeat;animation:splashFade 7s ease forwards}
 @keyframes splashFade{0%{opacity:0}8%{opacity:1}70%{opacity:1}100%{opacity:0;visibility:hidden}}
-#splash .s-big{font-size:64px;letter-spacing:26px;color:var(--gold);text-indent:26px}
-#splash .s-sub{font-size:14px;letter-spacing:8px;color:var(--dim);text-indent:8px}
-#splash .s-sign{font-size:11px;letter-spacing:3px;color:var(--dim)}
-#splash .s-seal{width:40px;height:40px;border:2px solid var(--seal);color:var(--seal);display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:1px;transform:rotate(-4deg);border-radius:4px}
 /* 顶栏 */
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .hdr .brand{font-size:26px;letter-spacing:8px;color:var(--gold);text-indent:8px;cursor:pointer}
@@ -78,12 +74,7 @@ body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','
 </head>
 <body>
 
-<div id="splash">
-  <div class="s-seal">清欢</div>
-  <div class="s-big">清欢</div>
-  <div class="s-sub">人间有味是清欢</div>
-  <div class="s-sign">永远的兰兰 · Lanlan Eternal</div>
-</div>
+<div id="splash"></div>
 
 <audio id="bgm" loop src="audio/qinxiao.mp3"></audio>
 
