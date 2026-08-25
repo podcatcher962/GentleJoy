@@ -271,17 +271,33 @@ function toggleTheme(){
   try{ localStorage.setItem('qjTheme', next); }catch(e){}
 }
 
-/* ============ 音乐 ============ */
-let soundOn = false;
+/* ============ 音乐（默认开启，尊重用户手动关闭） ============ */
+let soundOn = true;
 const bgm = document.getElementById('bgm');
 function toggleSound(){
   soundOn = !soundOn;
   if(soundOn){ bgm.volume = 0.25; bgm.play().catch(function(){}); }
   else { bgm.pause(); }
+  try{ localStorage.setItem('qjSound', soundOn ? '1' : '0'); }catch(e){}
   const el = document.getElementById('btnSound');
-  el.textContent = soundOn ? '♪ 开' : '♪ 关';
+  if(el) el.textContent = soundOn ? '♪ 开' : '♪ 关';
 }
-try{ if(localStorage.getItem('qjSound') === '1') toggleSound(); }catch(e){}
+function autoStartMusic(){
+  if(soundOn){ bgm.volume = 0.25; bgm.play().catch(function(){}); }
+  const el = document.getElementById('btnSound');
+  if(el) el.textContent = soundOn ? '♪ 开' : '♪ 关';
+}
+try{ if(localStorage.getItem('qjSound') === '0'){ soundOn = false; } }catch(e){}
+autoStartMusic();
+// 浏览器自动播放策略兜底：首次点击/触摸时确保开播
+document.addEventListener('click', function once(){
+  autoStartMusic();
+  document.removeEventListener('click', once);
+}, { once: true });
+document.addEventListener('touchstart', function onceT(){
+  autoStartMusic();
+  document.removeEventListener('touchstart', onceT);
+}, { once: true });
 
 /* ============ 语言 ============ */
 const UI = {
@@ -408,6 +424,8 @@ function render(){
   const ti = todayInfo();
   const p = todayPost();
   document.getElementById("langBtn").textContent = lang === 'zh' ? 'EN' : '中';
+  const bs = document.getElementById("btnSound");
+  if(bs) bs.textContent = soundOn ? '♪ 开' : '♪ 关';
   document.getElementById("dToday").textContent = ti.lunar || "";
   document.getElementById("dSolar").textContent = lang === 'zh' ? ti.solar : ti.solar.replace(/年|月|日/g, m => ({年:" ",月:"/",日:""})[m]);
   document.getElementById("period").textContent = t("period")[periodOf()];
