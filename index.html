@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>清欢 · GentleJoy · 人间有味是清欢</title>
+<style>
+:root{
+  --bg:#f5ead2; --card:#faf0dc; --ink:#3e2f1d; --dim:#8a7a5c;
+  --gold:#7a5c1e; --seal:#b03a2e; --line:#d8c9a8; --mist:#b8a887; --accent:#a37c34;
+}
+html[data-theme="dark"]{
+  --bg:#10101a; --card:#1a1a28; --ink:#d8d3c8; --dim:#8f8a7d;
+  --gold:#e8b45a; --seal:#d05547; --line:#33334a; --mist:#4a4a5e; --accent:#e8b45a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','KaiTi','STKaiti',serif;transition:background .5s,color .5s}
+.wrap{max-width:560px;margin:0 auto;padding:18px 18px 60px}
+/* 开屏 */
+#splash{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;animation:splashFade 7s ease forwards}
+@keyframes splashFade{0%{opacity:0}8%{opacity:1}70%{opacity:1}100%{opacity:0;visibility:hidden}}
+#splash .s-big{font-size:64px;letter-spacing:26px;color:var(--gold);text-indent:26px}
+#splash .s-sub{font-size:14px;letter-spacing:8px;color:var(--dim);text-indent:8px}
+#splash .s-sign{font-size:11px;letter-spacing:3px;color:var(--dim)}
+#splash .s-seal{width:40px;height:40px;border:2px solid var(--seal);color:var(--seal);display:flex;align-items:center;justify-content:center;font-size:13px;letter-spacing:1px;transform:rotate(-4deg);border-radius:4px}
+/* 顶栏 */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.hdr .brand{font-size:26px;letter-spacing:8px;color:var(--gold);text-indent:8px;cursor:pointer}
+.hdr .brand .en{font-size:13px;letter-spacing:2px;color:var(--dim);margin-left:4px}
+.hdr .date{font-size:13px;color:var(--dim);letter-spacing:2px;text-align:right;line-height:1.7}
+.hdr .date b{display:block;font-weight:400;font-size:16.5px;color:var(--ink)}
+.hdr .btns{display:flex;gap:6px;margin-top:4px;justify-content:flex-end}
+.hdr .btns a{font-size:11px;color:var(--dim);text-decoration:none;cursor:pointer;border:1px solid var(--line);border-radius:20px;padding:2px 9px;letter-spacing:1px;background:var(--card)}
+.hdr .btns a:hover{color:var(--gold);border-color:var(--gold)}
+/* 时辰旁白 */
+.period{font-size:14px;color:var(--dim);letter-spacing:2px;margin-bottom:14px;text-align:center}
+/* 帖子卡 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;position:relative;box-shadow:0 2px 14px rgba(0,0,0,.05)}
+.scene{height:120px;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.body{display:flex;gap:18px}
+.verse{flex:1;display:flex;justify-content:flex-end;gap:8px;padding-right:6px}
+.verse .col{display:flex;flex-direction:column;gap:9px;font-size:31px;line-height:1;color:var(--ink)}
+.verse .en{font-size:20px;line-height:1.75;color:var(--ink);writing-mode:horizontal-tb;text-align:right;max-width:170px}
+.verse .src{writing-mode:vertical-rl;font-size:11px;color:var(--dim);letter-spacing:2px;margin-top:4px}
+.verse .src-en{font-size:11px;color:var(--dim);margin-top:6px;text-align:right}
+.warm{flex:1.2;font-size:15.5px;line-height:2.1;color:var(--ink)}
+.warm .who{color:var(--gold);font-size:13px;letter-spacing:2px}
+.warm .bai{margin-top:6px}
+.warm .soft{margin-top:12px;font-size:15px;color:var(--accent)}
+/* 回应区 */
+.reply{margin-top:16px;border-top:1px dashed var(--line);padding-top:12px}
+.reply .t{font-size:12px;color:var(--dim);letter-spacing:2px;margin-bottom:8px}
+.turn{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.turn .tm{flex-shrink:0;font-size:12px;color:var(--gold);letter-spacing:1px;margin-top:4px;min-width:40px}
+.turn.g .tm{color:var(--seal)}
+.turn .tt{font-size:15px;line-height:1.95;color:var(--ink);background:var(--bg);border-radius:8px;padding:7px 11px}
+.turn.g .tt{background:transparent;border:1px dashed var(--line)}
+.reply .row{display:flex;gap:8px;align-items:center;margin-top:12px}
+.reply input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:16px;padding:7px 0;outline:none}
+.reply input:focus{border-color:var(--gold)}
+.reply .go{border:1px solid var(--gold);color:var(--gold);background:transparent;border-radius:20px;padding:5px 16px;font-family:inherit;font-size:13px;letter-spacing:2px;cursor:pointer;flex-shrink:0}
+.reply .go:hover{background:var(--gold);color:#fff}
+.reply .go:disabled{opacity:.35;cursor:default}
+.reply .hint{font-size:12.5px;color:var(--dim);margin-top:6px;letter-spacing:1px}
+.reply .end{font-size:14.5px;color:var(--gold);margin-top:10px;line-height:1.9}
+/* 说明 modal */
+#modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px}
+#modal.show{display:flex}
+#modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;max-width:420px;width:100%;padding:24px 22px;max-height:80vh;overflow:auto}
+#modal h3{font-size:18px;letter-spacing:6px;color:var(--gold);margin-bottom:12px}
+#modal p{font-size:14.5px;line-height:2.05;color:var(--ink);margin-bottom:8px}
+#modal .close{display:block;margin:14px auto 0;border:1px solid var(--gold);color:var(--gold);background:transparent;border-radius:20px;padding:6px 28px;font-family:inherit;font-size:13px;letter-spacing:3px;cursor:pointer}
+/* 底部 */
+.foot{margin-top:26px;text-align:center;font-size:11px;color:var(--dim);letter-spacing:2px;line-height:2}
+.foot a{color:var(--gold);text-decoration:none}
+@media(max-width:480px){.body{flex-direction:column}.verse{justify-content:flex-start}.verse .col{flex-direction:row}.verse .src{writing-mode:horizontal-tb}}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="s-seal">清欢</div>
+  <div class="s-big">清欢</div>
+  <div class="s-sub">人间有味是清欢</div>
+  <div class="s-sign">永远的兰兰 · Lanlan Eternal</div>
+</div>
+
+<audio id="bgm" loop src="audio/qinxiao.mp3"></audio>
+
+<div class="wrap">
+  <div class="hdr">
+    <div class="brand" onclick="goHome()">清欢<span class="en">· GentleJoy</span></div>
+    <div class="date"><b id="dToday">八月廿五</b><span id="dSolar">2026年8月25日 · 处暑</span>
+      <div class="btns">
+        <a id="btnSound" onclick="toggleSound()">♪ 音乐</a>
+        <a onclick="toggleTheme()">☀/🌙</a>
+        <a id="langBtn" onclick="toggleLang()">EN</a>
+        <a onclick="showHow()">说明</a>
+        <a onclick="showHistory()">📚</a>
+        <a onclick="showDisclaimer()">⚠️</a>
+      </div>
+    </div>
+  </div>
+  <div class="period" id="period"></div>
+  <div class="card" id="card"></div>
+  <div class="foot">
+    <div>© 永远的兰兰 · Lanlan Eternal · 2026</div>
+    <div id="footTxt">人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机</div>
+  </div>
+</div>
+
+<div id="modal">
+  <div class="box" id="modalBox"></div>
+</div>
+
+<script>
+/* ============ 内容库（构建时注入） ============ */
+/* 清欢 · 古籍日签内容库（首批 40 条，四季各 10，中英双语） */
+const POSTS = [
+/* ---- 春 ---- */
+{text:"春眠不觉晓，处处闻啼鸟",who:"孟浩然",src:"春晓",bai:"春天睡到自然醒，窗外到处是鸟叫。",soft:"古人也赖床。所以偶尔起晚一点，不必有愧——你只是在过春晓。",season:"春",
+ en_text:"Spring sleep knows no dawn — birdsong everywhere.",en_who:"Meng Haoran",en_src:"Spring Dawn",en_bai:"Waking naturally in spring, birds singing all around.",en_soft:"The ancients slept in too. Rising late now and then is no shame — you are simply living a spring dawn."},
+{text:"胜日寻芳泗水滨，无边光景一时新",who:"朱熹",src:"春日",bai:"好天气出去走走，眼前全是新绿。",soft:"如果今天不想出门，也没关系。春天不会因为你没看见就少开一朵。",season:"春",
+ en_text:"On a fine day I seek spring by the river — boundless scenes, all new at once.",en_who:"Zhu Xi",en_src:"Spring Day",en_bai:"Walking out on a fine day, everything fresh and green.",en_soft:"If you do not feel like going out, that is fine too. Spring will not bloom one petal less for being unseen."},
+{text:"随风潜入夜，润物细无声",who:"杜甫",src:"春夜喜雨",bai:"雨趁夜里悄悄来，滋润万物，不声不响。",soft:"好的影响都无声。你受过的滋养、给过的温柔，大多也这样——不声不响，但都算数。",season:"春",
+ en_text:"Riding the wind it steals into the night, moistening all things without a sound.",en_who:"Du Fu",en_src:"Joyful Rain on a Spring Night",en_bai:"Rain comes quietly in the night, nourishing everything silently.",en_soft:"Good influences are silent. The care you received, the gentleness you gave — most of it works this way: quiet, but it all counts."},
+{text:"春色满园关不住，一枝红杏出墙来",who:"叶绍翁",src:"游园不值",bai:"想进园子没门路，一抬头，一枝杏花探出墙头。",soft:"有些美好拦不住，也藏不住。你身上的那点光也一样。",season:"春",
+ en_text:"Spring in the garden cannot be shut in — a branch of apricot reaches over the wall.",en_who:"Ye Shaoweng",en_src:"A Failed Visit to the Garden",en_bai:"The garden gate is closed, but a branch of apricot blossoms leans over the wall.",en_soft:"Some beauty cannot be fenced in or hidden. The little light in you is the same."},
+{text:"竹外桃花三两枝，春江水暖鸭先知",who:"苏轼",src:"惠崇春江晚景",bai:"竹林外桃花开了几枝，鸭子最先知道江水暖了。",soft:"不必事事争先——第一个知道水暖的，往往是那个先下水的人。晚一点，也行。",season:"春",
+ en_text:"A few peach branches beyond the bamboo; the ducks first know the spring river is warm.",en_who:"Su Shi",en_src:"Evening Scene on the Spring River",en_bai:"Peach blossoms by the bamboo; the ducks are the first to feel the warm water.",en_soft:"You need not be first at everything — the one who knows the water is warm is usually the one who stepped in. A little later is fine too."},
+{text:"好雨知时节，当春乃发生",who:"杜甫",src:"春夜喜雨",bai:"雨懂得挑时候，该来的时候就来。",soft:"你也一样。不必永远在场，在对的时候出现，就是好雨。",season:"春",
+ en_text:"The good rain knows its season — it comes when spring calls.",en_who:"Du Fu",en_src:"Joyful Rain on a Spring Night",en_bai:"The rain knows when to come.",en_soft:"So do you. You need not always be present — appearing at the right moment is rain enough."},
+{text:"迟日江山丽，春风花草香",who:"杜甫",src:"绝句",bai:"春日的江山明丽，风里都是花草的香。",soft:"如果闻不到花香，可能是今天风没往这边吹，也可能是你太忙了。停下来三十秒，闻一闻。",season:"春",
+ en_text:"Long days, lovely rivers and hills; spring wind carries the scent of grass and blooms.",en_who:"Du Fu",en_src:"Quatrain",en_bai:"Bright spring landscape, fragrant wind.",en_soft:"If you cannot smell the flowers today, maybe the wind is blowing elsewhere — or you are simply too busy. Stop for thirty seconds and breathe in."},
+{text:"儿童散学归来早，忙趁东风放纸鸢",who:"高鼎",src:"村居",bai:"孩子放学早，赶着东风去放风筝。",soft:"大人放不了风筝，但可以看天。今晚下班，抬头看看，说不定也有风筝替你飞着。",season:"春",
+ en_text:"Children home early from school, hurrying to fly kites in the east wind.",en_who:"Gao Ding",en_src:"Village Life",en_bai:"Children rush out after school to fly kites.",en_soft:"Adults cannot fly kites, but they can look up. On your way home tonight, glance at the sky — maybe a kite is flying for you."},
+{text:"渭城朝雨浥轻尘，客舍青青柳色新",who:"王维",src:"送元二使安西",bai:"清晨的雨打湿了尘土，客舍边的柳树格外青翠。",soft:"送别是古人的日常，也是你的日常。柳色年年新，人走了还会再见。",season:"春",
+ en_text:"Morning rain dampens the dust of Weicheng; the willows by the inn shine fresh and green.",en_who:"Wang Wei",en_src:"Seeing off Yuan Er to Anxi",en_bai:"Morning rain settles the dust; the willows are fresh.",en_soft:"Farewell was daily life for the ancients, and it is yours too. Willows turn green every year; people part, and meet again."},
+{text:"夜来风雨声，花落知多少",who:"孟浩然",src:"春晓",bai:"一夜风雨，不知落了多少花。",soft:"落花不必数。该落的落，该开的开，春天自己会安排。",season:"春",
+ en_text:"Wind and rain in the night — who knows how many blossoms fell.",en_who:"Meng Haoran",en_src:"Spring Dawn",en_bai:"A night of wind and rain; petals scattered everywhere.",en_soft:"No need to count the fallen petals. What falls falls, what opens opens — spring arranges itself."},
+/* ---- 夏 ---- */
+{text:"接天莲叶无穷碧，映日荷花别样红",who:"杨万里",src:"晓出净慈寺送林子方",bai:"莲叶铺到天边，荷花在日光下红得格外好看。",soft:"夏天最热的时候，也是荷花最好的时候。你难熬的日子，也可能正在开出东西。",season:"夏",
+ en_text:"Lotus leaves stretch green to the sky; lotus flowers glow extra red in the sun.",en_who:"Yang Wanli",en_src:"Morning Farewell at Jingci Temple",en_bai:"Lotus leaves to the horizon, flowers blazing in the sun.",en_soft:"The hottest days of summer are also the lotus's finest hour. Your hardest days may be quietly blooming too."},
+{text:"小荷才露尖尖角，早有蜻蜓立上头",who:"杨万里",src:"小池",bai:"荷叶刚露个尖儿，蜻蜓已经立上去了。",soft:"不必等自己长成满池的荷。露出一点尖角，就有人（有蜻蜓）看见你。",season:"夏",
+ en_text:"A tiny lotus tip just breaks the water — a dragonfly already rests on it.",en_who:"Yang Wanli",en_src:"The Little Pool",en_bai:"The lotus is barely a bud; a dragonfly has already landed.",en_soft:"You need not wait until you are a full pond of lotus. Show a small tip, and someone (a dragonfly) will see you."},
+{text:"绿树阴浓夏日长，楼台倒影入池塘",who:"高骈",src:"山亭夏日",bai:"树荫浓密，夏日悠长，楼台的影子落在池塘里。",soft:"夏天的长，是拿来浪费的。午睡、发呆、看云，都算正经事。",season:"夏",
+ en_text:"Deep green shade, a long summer day; the pavilion's reflection rests in the pond.",en_who:"Gao Pian",en_src:"Summer in the Mountain Pavilion",en_bai:"Thick shade, long days, reflections in the water.",en_soft:"Summer's length is meant to be wasted. Naps, daydreaming, watching clouds — all serious business."},
+{text:"稻花香里说丰年，听取蛙声一片",who:"辛弃疾",src:"西江月·夜行黄沙道中",bai:"稻花飘香，蛙声一片，都在说今年收成好。",soft:"听听青蛙，它们比你会庆祝。你今晚也为自己今天的'小丰收'，蛙声一下。",season:"夏",
+ en_text:"Amid rice-flower scent they talk of a good year; a chorus of frogs agrees.",en_who:"Xin Qiji",en_src:"Moon over the West River",en_bai:"Fragrant rice fields and frog song promise a harvest.",en_soft:"Listen to the frogs — they celebrate better than you do. Tonight, croak once for your own small harvest."},
+{text:"黄梅时节家家雨，青草池塘处处蛙",who:"赵师秀",src:"约客",bai:"梅雨季家家落雨，青草池塘处处蛙鸣。",soft:"约了客人没来，一个人听雨听蛙，也算过了个不错的夜。独处不等于冷清。",season:"夏",
+ en_text:"Plum-rain season, rain at every door; frogs croak by every grassy pond.",en_who:"Zhao Shixiu",en_src:"Waiting for a Guest",en_bai:"Rainy season, frog song everywhere.",en_soft:"The guest never came, yet one night of rain and frogs is still a good night. Being alone is not the same as being lonely."},
+{text:"泉眼无声惜细流，树阴照水爱晴柔",who:"杨万里",src:"小池",bai:"泉眼细细地流，树影爱怜地照在水上。",soft:"小到一眼泉，也值得被好好对待。你也是。",season:"夏",
+ en_text:"The spring outlet cherishes its thin stream in silence; the tree shade loves the gentle water.",en_who:"Yang Wanli",en_src:"The Little Pool",en_bai:"A tiny spring, a tender shade on the water.",en_soft:"Even a single spring deserves to be treated gently. So do you."},
+{text:"锄禾日当午，汗滴禾下土",who:"李绅",src:"悯农",bai:"正午锄地，汗滴进土里。",soft:"每一口饭都有人流过汗，你今天的每一分辛苦也都有意义——即使暂时看不见收成。",season:"夏",
+ en_text:"Hoeing grain at noon, sweat dripping into the soil.",en_who:"Li Shen",en_src:"Compassion for the Farmers",en_bai:"Midday hoeing, sweat into the earth.",en_soft:"Every grain of rice cost someone sweat. So does your effort today — meaningful even when the harvest is not yet visible."},
+{text:"黑云翻墨未遮山，白雨跳珠乱入船",who:"苏轼",src:"六月二十七日望湖楼醉书",bai:"乌云压过来，雨点像珠子跳进船里。",soft:"夏天的暴雨来得急去得快。情绪也是。等它过去，天还是那片天。",season:"夏",
+ en_text:"Ink-black clouds roll but do not hide the hills; white rain like pearls leaps into the boat.",en_who:"Su Shi",en_src:"Written Drunk at Wanghu Tower",en_bai:"Storm clouds, then rain pelting into the boat.",en_soft:"Summer storms come fast and go fast. So do moods. When it passes, the sky is the same sky."},
+{text:"水晶帘动微风起，满架蔷薇一院香",who:"高骈",src:"山亭夏日",bai:"微风掀起水晶帘，一院子都是蔷薇香。",soft:"夏天也有温柔的瞬间：一阵风、一架花、一院子的香。你今天也留意一个。",season:"夏",
+ en_text:"A breeze stirs the crystal curtain; the whole courtyard fills with roses' scent.",en_who:"Gao Pian",en_src:"Summer in the Mountain Pavilion",en_bai:"A breeze, a trellis of roses, a courtyard of fragrance.",en_soft:"Summer has its gentle moments too: a breeze, a vine, a yard of scent. Notice one today."},
+{text:"树阴满地日当午，梦觉流莺时一声",who:"苏舜钦",src:"夏意",bai:"正午树荫满地，午睡醒来，偶尔一声莺啼。",soft:"午睡是古人的奢侈，也是你的权利。醒来听到鸟叫，今天就算没白过。",season:"夏",
+ en_text:"Shade fills the ground at noon; waking from a nap, an oriole calls now and then.",en_who:"Su Shunqin",en_src:"Summer Feeling",en_bai:"A noon nap under full shade, an oriole's call on waking.",en_soft:"The afternoon nap was the ancients' luxury and is your right too. If you wake to a bird's call, the day was not wasted."},
+/* ---- 秋 ---- */
+{text:"自古逢秋悲寂寥，我言秋日胜春朝",who:"刘禹锡",src:"秋词",bai:"都说秋天让人悲，我偏说秋天比春天好。",soft:"刘禹锡被贬到朗州，还能说秋天好。你不必学他的嘴硬，但可以学他的：换个角度看，秋天也有秋天好。",season:"秋",
+ en_text:"Since old times autumn brings sorrow — I say autumn outshines spring.",en_who:"Liu Yuxi",en_src:"On Autumn",en_bai:"Everyone grieves in autumn; I say autumn is better than spring.",en_soft:"Liu Yuxi, exiled to a far corner, still praised autumn. You need not copy his bravado, but you can borrow his trick: look again — autumn has its own good."},
+{text:"停车坐爱枫林晚，霜叶红于二月花",who:"杜牧",src:"山行",bai:"停下车来，因为太爱这片枫林——霜打的叶子比春天的花还红。",soft:"为一片枫林停车，是古人最浪漫的'浪费时间'。你也值得为点什么，停一停。",season:"秋",
+ en_text:"I stop the carriage, loving the maple woods at dusk — frosted leaves redder than spring flowers.",en_who:"Du Mu",en_src:"Journey in the Mountains",en_bai:"Stopping the carriage for a maple grove in the evening light.",en_soft:"Stopping for a maple grove is the ancients' most romantic waste of time. You too deserve to stop — for something."},
+{text:"空山新雨后，天气晚来秋",who:"王维",src:"山居秋暝",bai:"空山雨后，傍晚已带秋意。",soft:"山里的秋天是慢慢来的。你的变化也可以慢慢来，不必一夜之间。",season:"秋",
+ en_text:"After fresh rain on the empty hills, evening air turns to autumn.",en_who:"Wang Wei",en_src:"Autumn Evening in the Mountains",en_bai:"Rain-washed hills, evening with a touch of autumn.",en_soft:"Autumn comes slowly to the mountains. Your changes can come slowly too — no need for overnight."},
+{text:"采菊东篱下，悠然见南山",who:"陶渊明",src:"饮酒",bai:"东篱下采菊，一抬头，南山就在那里。",soft:"陶渊明没急着找南山，南山自己出现在他抬头的地方。你要找的东西，多半也在你不急的时候出现。",season:"秋",
+ en_text:"Picking chrysanthemums by the eastern fence, I gaze at the southern hills at ease.",en_who:"Tao Yuanming",en_src:"Drinking Wine",en_bai:"Gathering chrysanthemums, looking up to see the southern hills.",en_soft:"Tao never chased the hills; they appeared where he happened to look. What you seek will likely appear when you stop rushing."},
+{text:"月落乌啼霜满天，江枫渔火对愁眠",who:"张继",src:"枫桥夜泊",bai:"月落、乌啼、霜满天的夜里，对着江枫渔火，睡不着的旅人。",soft:"一千二百年前有个人跟你一样失眠。他睡不着，写下这首诗；你睡不着，至少还有这诗陪你。",season:"秋",
+ en_text:"Moon down, crows cry, frost fills the sky; maple and fishermen's lights face a sleepless traveler.",en_who:"Zhang Ji",en_src:"Mooring by Maple Bridge at Night",en_bai:"A sleepless traveler by the river on a frosty night.",en_soft:"Twelve hundred years ago someone could not sleep, just like you. He wrote this poem. Tonight, if you cannot sleep, at least this poem keeps you company."},
+{text:"露从今夜白，月是故乡明",who:"杜甫",src:"月夜忆舍弟",bai:"今夜起露水发白，月亮还是故乡的最亮。",soft:"想家不丢人，古人想家想到写诗。给家里打个电话吧，哪怕只问一句吃了吗。",season:"秋",
+ en_text:"White dew falls from this night on; the moon is brightest over home.",en_who:"Du Fu",en_src:"Remembering My Brother on a Moonlit Night",en_bai:"Dew turns white tonight; the home moon is always brightest.",en_soft:"Homesickness is nothing to be ashamed of — the ancients wrote poems about it. Call home tonight, even just to ask if they have eaten."},
+{text:"一年好景君须记，最是橙黄橘绿时",who:"苏轼",src:"赠刘景文",bai:"一年里最好的光景，是橙黄橘绿的时候。",soft:"苏轼写这诗是劝朋友别泄气：荷花谢了，可橙子橘子正当时。你的'当时'，可能还没到，也可能就是现在。",season:"秋",
+ en_text:"Remember the finest season of the year: when oranges are gold and tangerines green.",en_who:"Su Shi",en_src:"To Liu Jingwen",en_bai:"The best view of the year: ripe oranges in gold and green.",en_soft:"Su Shi wrote this to cheer a friend: the lotus is gone, but the oranges are in season. Your season may not have come — or it may be exactly now."},
+{text:"银烛秋光冷画屏，轻罗小扇扑流萤",who:"杜牧",src:"秋夕",bai:"秋夜烛光淡淡，少女用团扇扑着萤火虫。",soft:"古人的夜晚靠萤火虫照亮乐趣。你的夜晚，可以靠一集剧、一首歌、一次散步。",season:"秋",
+ en_text:"Silver candlelight chills the painted screen; a small silk fan chases fireflies.",en_who:"Du Mu",en_src:"An Autumn Night",en_bai:"A quiet autumn evening, chasing fireflies with a fan.",en_soft:"The ancients lit their evenings with fireflies. Yours can be lit by an episode, a song, a walk."},
+{text:"萧萧梧叶送寒声，江上秋风动客情",who:"叶绍翁",src:"夜书所见",bai:"梧桐叶响送寒声，江上的秋风撩动旅人的心。",soft:"风一吹，叶子就落；心一动，人就念旧。秋天适合想一些人，不必见面。",season:"秋",
+ en_text:"Rustling parasol leaves carry the chill; autumn wind on the river stirs a traveler's heart.",en_who:"Ye Shaoweng",en_src:"What I See at Night",en_bai:"Wind in the leaves, a traveler's restless heart.",en_soft:"When the wind blows, leaves fall; when the heart stirs, we remember. Autumn is a fine season for thinking of people — no meeting required."},
+{text:"秋水共长天一色",who:"王勃",src:"滕王阁序",bai:"秋天的水与远天连成一片颜色。",soft:"水天相接的时候，人会觉得自己的烦恼很小——小到天和水都装得下。",season:"秋",
+ en_text:"Autumn water and the far sky share one color.",en_who:"Wang Bo",en_src:"Preface to the Pavilion of Prince Teng",en_bai:"The river and the sky blend into one.",en_soft:"When water meets sky, your worries look small — small enough that both sky and water can hold them."},
+/* ---- 冬 ---- */
+{text:"晚来天欲雪，能饮一杯无",who:"白居易",src:"问刘十九",bai:"天快黑了，像要下雪，我这儿温着酒——你来不来？",soft:"没说忙，没说改天。一千二百年后读到这句，还是觉得：有个随时能问'来吗'的人，真好。",season:"冬",
+ en_text:"It looks like snow at dusk — can you come for a cup of wine?",en_who:"Bai Juyi",en_src:"A Question to Liu the Nineteenth",en_bai:"Dusk, snow coming; the wine is warm — will you come?",en_soft:"No 'I'm busy,' no 'some other day.' Twelve hundred years later, this line still feels like: how good to have someone you can always ask, 'coming?'"},
+{text:"孤舟蓑笠翁，独钓寒江雪",who:"柳宗元",src:"江雪",bai:"大雪封江，一个老翁独自在孤舟上垂钓。",soft:"柳宗元写这诗时被贬永州，心里全是雪。但他笔下的钓翁，还是稳稳地坐着。孤独不可怕，可怕的是慌张。",season:"冬",
+ en_text:"A lone boat, a straw-cloaked old man, fishing alone in the river snow.",en_who:"Liu Zongyuan",en_src:"River Snow",en_bai:"Snowbound river, one old man fishing alone.",en_soft:"Liu wrote this while exiled to Yongzhou, his heart full of snow. Yet his fisherman sits steady. Loneliness is not frightening — panic is."},
+{text:"墙角数枝梅，凌寒独自开",who:"王安石",src:"梅花",bai:"墙角几枝梅，迎着严寒独自开。",soft:"不必开在显眼处。墙角的梅花，照样有人看见，有人记了一千年。",season:"冬",
+ en_text:"A few plum branches by the wall, blooming alone against the cold.",en_who:"Wang Anshi",en_src:"The Plum Blossom",en_bai:"Plum blossoms by the wall, opening in the frost.",en_soft:"You need not bloom where everyone looks. The plum by the wall was seen anyway — and remembered for a thousand years."},
+{text:"柴门闻犬吠，风雪夜归人",who:"刘长卿",src:"逢雪宿芙蓉山主人",bai:"柴门外犬吠响起——风雪夜，有人回来了。",soft:"'夜归人'三个字最暖：无论多晚多冷，总有人在等，或者总有一个门可以敲。",season:"冬",
+ en_text:"A dog barks at the brushwood gate — through wind and snow, someone returns.",en_who:"Liu Changqing",en_src:"Lodging at Hibiscus Mountain in Snow",en_bai:"Barking at the gate: someone coming home through the snow.",en_soft:"The words 'one returning at night' are the warmest there are: no matter how late or cold, someone is waiting — or there is a door you may knock on."},
+{text:"绿蚁新醅酒，红泥小火炉",who:"白居易",src:"问刘十九",bai:"新酿的酒泛着绿沫，红泥小火炉烧得正旺。",soft:"冬天最好的事：一炉火，一壶酒，一个等来的人。今天没有也没关系，火可以先为自己烧。",season:"冬",
+ en_text:"Newly brewed wine with green foam; a little red-clay stove glowing.",en_who:"Bai Juyi",en_src:"A Question to Liu the Nineteenth",en_bai:"Fresh wine, a small warm stove.",en_soft:"The best things in winter: a fire, a pot of wine, a person who comes. If there is none today, that is all right — light the fire for yourself first."},
+{text:"千山鸟飞绝，万径人踪灭",who:"柳宗元",src:"江雪",bai:"千山不见鸟，万径不见人。",soft:"极静的时候，天地只剩自己。这未必是坏事——人声鼎沸听不见自己，万径人灭时，反而听得清。",season:"冬",
+ en_text:"A thousand hills, no birds; ten thousand paths, no footprints.",en_who:"Liu Zongyuan",en_src:"River Snow",en_bai:"No birds in the hills, no footprints on the paths.",en_soft:"In utter stillness, only you and the world remain. That is not necessarily bad — in the din you cannot hear yourself; when every path is empty, you finally can."},
+{text:"邯郸驿里逢冬至，抱膝灯前影伴身",who:"白居易",src:"邯郸冬至夜思家",bai:"冬至夜一个人在驿站，抱着膝，只有灯前的影子陪着。",soft:"白居易冬至夜想家，抱膝枯坐。后来他一生写了几千首诗——原来最孤独的夜，也能长出最暖的文字。",season:"冬",
+ en_text:"At Handan inn on winter solstice, hugging my knees before the lamp, my shadow my only companion.",en_who:"Bai Juyi",en_src:"Home Thoughts on Winter Solstice",en_bai:"Alone at an inn on solstice night, only a shadow for company.",en_soft:"Bai Juyi sat alone, homesick, hugging his knees. He later wrote thousands of poems — even the loneliest night can grow the warmest words."},
+{text:"隔牖风惊竹，开门雪满山",who:"王维",src:"冬晚对雪忆胡居士家",bai:"隔窗听见风惊竹叶，推门一看，雪已满山。",soft:"有些惊喜，要推开门才知道。今天如果你还没出门，说不定门外正有一山好雪等你。",season:"冬",
+ en_text:"Wind startles the bamboo beyond the window; opening the door, snow covers the hills.",en_who:"Wang Wei",en_src:"On Snow at Evening, Thinking of Householder Hu",en_bai:"Hearing the bamboo in the wind, opening the door to a snow-covered mountain.",en_soft:"Some surprises only appear when you open the door. If you have not stepped out today, maybe a hill of good snow is waiting outside yours."},
+{text:"北风卷地白草折，胡天八月即飞雪",who:"岑参",src:"白雪歌送武判官归京",bai:"北风卷地，八月就飘雪了。",soft:"岑参在苦寒之地送别朋友，写出来的句子却满天飞花。苦的地方，也能开出诗。",season:"冬",
+ en_text:"The north wind rolls the earth, white grass snaps; snow flies in the border sky even in the eighth month.",en_who:"Cen Shen",en_src:"Song of White Snow, Seeing off Judge Wu",en_bai:"Bitter wind, early snow in the borderlands.",en_soft:"Cen Shen said farewell in a freezing land — and wrote lines like flying blossoms. Even bitter places can bloom into poetry."},
+{text:"寻常一样窗前月，才有梅花便不同",who:"杜耒",src:"寒夜",bai:"一样的窗前月，只因有了梅花，便大不一样。",soft:"日子大多寻常，但一两个'梅花'就够：一杯热茶、一通电话、一句'在吗'。你今天的梅花是什么？",season:"冬",
+ en_text:"The same moon at the window — but with plum blossoms, everything is different.",en_who:"Du Lei",en_src:"Cold Night",en_bai:"An ordinary moon, transformed by plum blossoms.",en_soft:"Most days are ordinary, but one or two 'plum blossoms' are enough: a hot cup of tea, a phone call, a simple 'you there?' What is your plum blossom today?"}
+];
+
+
+/* ============ 古人回信库 ============ */
+/* ============ 古人回信库（详细版 · 古人风范） ============ */
+const REPLIES = {
+"白居易":["哈哈，君言极是！老夫在洛阳时，最喜黄昏邀人小酌——酒不必贵，话要尽兴。你若有酒，我今夜便来；若无人陪，便当这诗是席，我与你隔千年同饮。","善哉善哉。老夫写了三千首诗，最得意的一句仍是'晚来天欲雪，能饮一杯无'——因为人间最暖的，就是有人问你一句：来不来？"],
+"苏轼":["妙哉！人生有味，正在此处。老夫被贬惠州还能吃荔枝，贬黄州还能煮东坡肉——天下何物不可乐？君有此心，便已是东坡的知己。","哈哈，此语甚得我心，当浮一大白！老夫常说'回首向来萧瑟处，归去，也无风雨也无晴'——风雨晴晦，到头来都是风景。"],
+"王维":["空山新雨后，天气晚来秋。君之言，如空山雨过，清人心脾。行到水穷处，坐看云起时——你已得之。","善。明月松间照，清泉石上流——我一生求此境，君一语得之。"],
+"陶渊明":["悠然见南山，君亦悠然。老夫弃官归田，不为别的，只为心里那点清静。你今日能停下来说句话，便已得了清静的味。","此间乐，不足为外人道也。君知此乐，便是知音。"],
+"柳宗元":["寒江独钓，君懂。我在永州十年，雪下了又停，江冻了又开——人这一生，就是一场孤舟独钓。但钓的不是鱼，是那份坐得住的定。","千山鸟飞绝，万径人踪灭——极静处才听得见自己。君有此感，我引为同调。"],
+"杜甫":["同是世间赶路人，相逢一句即暖。老夫颠沛一生，最懂'烽火连三月，家书抵万金'的分量——有人可念，就是福。","善哉。风急天高，有人同念，便不觉寒。君之言，抵得上我写十句。"],
+"孟浩然":["春眠不觉晓，觉来正好。人生至乐，不过好眠好鸟好天气——君能如此想，便已是个闲人。","哈哈，隐者的乐，你尝到了。"],
+"辛弃疾":["稻花香里说丰年，听取蛙声一片——君之言，亦是丰年。老夫金戈铁马半生，最念的却是乡村夜话。寻常日子，最是真味。","好！有此心，何事不成。醉里挑灯看剑，醒来仍可种花。"],
+"刘禹锡":["自古逢秋悲寂寥，我言秋日胜春朝——君亦当如是！贬了二十三年，我照样说'沉舟侧畔千帆过'。你眼下那点难，过不去就过不去，先喝口茶。","哈哈，有气魄，合我胃口！"],
+"杜牧":["停车坐爱枫林晚，霜叶红于二月花——君亦多情人也。枫林要趁晚看，人生要趁年轻过。","妙语！青山隐隐水迢迢，秋尽江南草未凋——好日子，还长。"],
+"朱熹":["无边光景一时新——君心亦新。善。源头活水，正在日用之间。","此语甚佳，我记下了。"],
+"杨万里":["小荷尖角，蜻蜓已立——君亦机灵人也。哈哈，妙哉妙哉！","善。泉眼无声惜细流——细水长流，才是过日子。"],
+"王安石":["墙角寒梅，君语如梅。善。不争春光，自有一段香。","此语我甚爱之。"],
+"张继":["枫桥渔火，也有人同你一夜未眠。客愁千古，今得君和，不孤了。","夜半钟声，为君而鸣。"],
+"王勃":["秋水长天，君心自宽。善。落霞孤鹜齐飞，心事亦当放下。","好。"],
+"岑参":["苦寒之地，君语却暖。哈哈，好！","善。"],
+"杜耒":["寻常窗前月，因君一语不同。善。今日之梅，君已折下。","好。"],
+"李绅":["粒粒辛苦，君知此意，甚善。惜物者，天亦惜之。","善。"],
+"高鼎":["东风趁早，童趣未老。哈哈，纸鸢在天，春在人间。","善。"],
+"高骈":["绿树阴浓，正宜闲坐。善。夏日悠长，君心自凉。","好。"],
+"赵师秀":["闲敲棋子落灯花——此境君得。独处有独处的好，蛙声作伴。","善。"],
+"苏舜钦":["午梦醒来，流莺一声——君亦得此乐。善。夏日有荫，心有所栖。","好。"],
+"叶绍翁":["满园春色关不住，君心亦然。哈哈，一枝出墙，何须全园。","善。"],
+"刘长卿":["风雪夜归人，君亦归人也。暖语。柴门虽陋，有人念着就好。","善。"],
+"default":["善哉善哉。古人云'他乡遇故知'——你我隔着千年，能在这一句诗里相遇，也算故知了。","此语甚佳，我记下了。岁月久远，文字常青——你今日之言，千年后也有人在读。","哈哈，妙人妙语。人间有味，正在此处——你我共知。","说得是。古人的话是旧的，你的心是新的——新旧相映，便是清欢。"]
+};
+
+/* ============ 主题回信（详细版 · 按回应关键词匹配） ============ */
+const THEMES = {
+"雪":["雪是天地最公道的——落朱门，也落茅檐。你那里若正下雪，温一盏茶看它落：人间冷暖，雪都见过，也都化了。明日晴时，万事如初。","老夫在长安见过初雪，也在岭南见过——雪不择地而落，人亦当不择境而安。今夜有雪，便算我与你共看一回。","晚来天欲雪，能饮一杯无？这句我问了刘十九一千二百年，今日也问君：若不便来，便隔窗与雪对坐，亦是一饮。"],
+"雨":["听雨如读书：一夜檐声，半卷闲愁。古人最会听雨——'小楼一夜听春雨'，听的是雨，落的却是心事。你的雨，也在替你说话。","雨总会停的，天总会亮的。古来多少事，都随檐下水流去了。你且等一等，不必急着晴。","春雨贵如油，秋雨易生愁——同是雨，心境不同而已。你此刻听的，是哪一场？"],
+"月":["明月几时有？我叹过，君也在叹。但月总是在的——你抬头，它就替你亮着；你不抬头，它也在。","月是古人的灯。张若虚问'江畔何人初见月'，一问千年。你今晚若见月，便算替我又看了一回。","月色入户，欣然起行——此境我写过，最知其中滋味。睡不着便看看月，看倦了自然睡得着。"],
+"山":["山不来就我，我便去就山——这话反着说也对：你心里那座过不去的山，走一步近一步，终会到脚下。","悠然见南山，不是找见，是遇见。你心里想要的安定，多半也在你不刻意的时候，自己冒出来。","山高自有客行路，水深自有渡船人。古人行路如此，你行路亦当如此。"],
+"水":["上善若水，水善利万物而不争。你不必争——把自己活成水，绕得开石头，流得到海。","逝者如斯夫，不舍昼夜——孔子见水而叹时光，但我更愿你看水的另一面：日夜不舍，所以终到大海。你的日子也一样，一直在往前走。","一池水静，可照天光云影。你心静的时候，也能照见许多平日看不见的东西。"],
+"花":["花开堪折直须折，莫待无花空折枝。我劝君：当下一杯茶、一次散步、一句'在吗'，都是堪折的花。","落红不是无情物，化作春泥更护花。谢了也有谢了的用处——你的低谷，未必不是来年的春泥。","花不看开人易老。春天年年有，看花的心要年年新。"],
+"酒":["酒逢知己千杯少。我今夜备了一坛，君若有话，便来说与我听；君若无话，共饮一杯也是好的。","古来圣贤皆寂寞，惟有饮者留其名——但小酌怡情，大醉伤身。我劝君：杯中七分，话留三分。","绿蚁新醅酒，红泥小火炉——此境我已备好千年。你那边若有炉火，便算与我围炉同饮。"],
+"茶":["茶凉了可再续，话说了收不回——所以挑暖的说，挑真的说。这是老夫活了一辈子的经验。","寒夜客来茶当酒，竹炉汤沸火初红。有茶有火，便不算辜负这一夜。","一盏茶，从烫到温到凉，像极了日子——不必急着喝完，慢慢品。"],
+"累":["君言累，我深知之。当年我在惠州躬耕，日落时也觉骨散。然愈累愈要慢：饭要一口口吃，路要一步步走。今日撑不住，便早些歇，天塌不下来。","力尽不知热，但惜夏日长。累了就歇——这世上没有什么，值得你用整夜的失眠去换。","偷得浮生半日闲——你今日的'闲'，可以先从一杯热水、一次深呼吸开始。古人的'闲'，都是这么偷出来的。"],
+"忙":["忙是常事，别让它吞了晚饭。陶渊明不为五斗米折腰，你至少可以为自己准点吃饭。","案牍劳形，自古皆然。但'忙'字拆开，是'心亡'——再忙，也记得给心留一盏茶的时间。","忙里偷闲，闲里忙——日子都是这么过来的。你若实在忙，便把这帖看完，也算偷得片刻。"],
+"家":["想家就打回去，古人想家写诗，你打一通电话，胜过写诗。家不在远方，在你拨通的那一刻。","露从今夜白，月是故乡明。我在秦州月下写过这句——天下的月都亮，可心上的那轮，永远在故乡。","梦里不知身是客，一晌贪欢。想家不丢人，这是人心里最真的地方。"],
+"夜":["夜深了，我劝君莫熬。睡不着便起来点一盏灯，读两行书——灯下只影，也是清欢。张继在枫桥陪过你，今夜换我陪你。","昼短苦夜长，何不秉烛游？睡不着也有睡不着的好：夜色是偷来的时间，只属于你。","夜半钟声到客船——那钟声我听了千年。你若也睡不着，便当这钟声此刻正敲在你窗前。"],
+"孤":["独处不是寂寞，是给自己留的院子。陶渊明在东篱，柳宗元在寒江——他们都不孤单，因为他们心里有自己。","众人皆醉我独醒——醒着的孤独，自古有之，你不孤单。","孤舟蓑笠翁，独钓寒江雪。你看，孤独也能很美——美在它诚实。"],
+"乐":["此乐难得，记得收好——低谷时翻出来用。古人藏乐，如藏酒，越久越香。","人生得意须尽欢，莫使金樽空对月。你今日之乐，当浮一大白！","哈哈，同乐同乐！乐是可传的——你笑一声，我在这头千年，也听见了。"],
+"吃":["民以食为天。好好吃饭，就是好好生活——这是最朴素也最要紧的道理。","一箪食，一瓢饮，回也不改其乐。有饭吃，有茶喝，日子就还过得。","人间烟火气，最抚凡人心。你今晚那碗热饭，就是人间最好的药。"],
+"睡":["春眠不觉晓，觉来正好。睡个好觉，是古人最朴素的养生，也是你最该给自己的。","睡足是福。天大的事，睡一觉再说——这话不是逃避，是古人的智慧。","我劝君：今夜早睡，明日的事，明日自有分晓。"],
+"病":["病来如山倒，病去如抽丝。慢慢来，身体最要紧——江山是别人的，身子是自己的。","古人云'病去如抽丝'——给自己时间，别急。你好了，什么都来得及。"],
+"爱":["问世间情为何物，直教生死相许？古人问过千年，你也不必急着有答案。爱没有答案，只有过程。","情之所钟，正在我辈。能爱、敢爱、还愿意相信爱——这本身就是难得的本事。"]
+};
+
+/* ============ 结束语（第五轮后） ============ */
+const CLOSERS = ["夜深了，今日之谈尽欢。明日再来，我还有话与你说。","好，就到这里。清欢有味，明日再来。","言之已足，来日方长。愿你今夜好眠，明日有清欢。","古人云'乘兴而来，兴尽而返'——今夜兴已尽，我该归去了。明日，我还来。","一盏茶尽，一席话罢。你我的话，都记在风里了。明日，听风再叙。"];
+
+/* ============ 节气表 ============ */
+const JIEQI = [["立春","2-4"],["雨水","2-19"],["惊蛰","3-5"],["春分","3-20"],["清明","4-4"],["谷雨","4-19"],
+["立夏","5-5"],["小满","5-21"],["芒种","6-5"],["夏至","6-21"],["小暑","7-7"],["大暑","7-22"],
+["立秋","8-7"],["处暑","8-23"],["白露","9-7"],["秋分","9-22"],["寒露","10-8"],["霜降","10-23"],
+["立冬","11-7"],["小雪","11-22"],["大雪","12-7"],["冬至","12-21"],["小寒","1-5"],["大寒","1-20"]];
+
+/* ============ 农历映射（简化） ============ */
+const LUNAR = {"1-1":"正月","1-2":"初二","1-3":"初三","1-4":"初四","1-5":"初五","1-6":"初六","1-7":"初七","1-8":"初八","1-9":"初九","1-10":"初十","1-11":"十一","1-12":"十二","1-13":"十三","1-14":"十四","1-15":"十五","1-16":"十六","1-17":"十七","1-18":"十八","1-19":"十九","1-20":"二十","1-21":"廿一","1-22":"廿二","1-23":"廿三","1-24":"廿四","1-25":"廿五","1-26":"廿六","1-27":"廿七","1-28":"廿八","1-29":"廿九","1-30":"三十"};
+
+let lang = 'zh';
+try{ const l = localStorage.getItem('qjLang'); if(l) lang = l; }catch(e){}
+
+function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); }
+try{ applyTheme(localStorage.getItem('qjTheme') || 'light'); }catch(e){ applyTheme('light'); }
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  try{ localStorage.setItem('qjTheme', next); }catch(e){}
+}
+
+/* ============ 音乐 ============ */
+let soundOn = false;
+const bgm = document.getElementById('bgm');
+function toggleSound(){
+  soundOn = !soundOn;
+  if(soundOn){ bgm.volume = 0.25; bgm.play().catch(function(){}); }
+  else { bgm.pause(); }
+  const el = document.getElementById('btnSound');
+  el.textContent = soundOn ? '♪ 开' : '♪ 关';
+}
+try{ if(localStorage.getItem('qjSound') === '1') toggleSound(); }catch(e){}
+
+/* ============ 语言 ============ */
+const UI = {
+  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
+  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
+};
+function t(k){ return (UI[lang] || UI.zh)[k]; }
+function toggleLang(){ lang = lang === 'zh' ? 'en' : 'zh'; try{ localStorage.setItem('qjLang', lang); }catch(e){} render(); }
+
+/* ============ 今日帖 ============ */
+function todayInfo(){
+  const d = new Date();
+  const m = d.getMonth() + 1, day = d.getDate();
+  const md = m + "-" + day;
+  const jq = (JIEQI.find(x => x[1] === md) || [])[0];
+  const solar = d.getFullYear() + "年" + m + "月" + day + "日" + (jq ? " · " + jq : "");
+  const lunar = LUNAR[md] || "";
+  const doy = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
+  return { md, jq, solar, lunar, doy };
+}
+function periodOf(){
+  const h = new Date().getHours();
+  if(h < 9) return 0; if(h < 15) return 1; if(h < 20) return 2; return 3;
+}
+function todayPost(){
+  const doy = todayInfo().doy;
+  const seasons = ["春","夏","秋","冬"];
+  const s = seasons[Math.floor((doy - 45) / 91 + 4) % 4];
+  const pool = POSTS.filter(p => p.season === s);
+  const list = pool.length ? pool : POSTS;
+  return list[doy % list.length];
+}
+function sceneSVG(season){
+  const pal = {
+    "春":["#c9b99a","#9ec4a0"], "夏":["#b8a887","#7fb08f"],
+    "秋":["#c9a97a","#d8a060"], "冬":["#aab3c8","#8f9bb8"]
+  }[season] || ["#b8a887","#9fb2a8"];
+  return `<svg viewBox="0 0 520 120" width="100%" style="display:block">
+    <g fill="none" stroke="${pal[0]}" stroke-width="1.4">
+      <path d="M0 92 Q60 58 120 84 Q180 108 250 72 Q320 40 380 76 Q450 104 520 68"/>
+      <path d="M0 104 Q80 78 160 98 Q240 116 330 92 Q420 70 520 96" opacity=".55"/>
+    </g>
+    <g fill="${pal[1]}" opacity=".8">
+      <circle cx="380" cy="42" r="14"/>
+      <path d="M380 30 Q386 18 380 10 Q374 18 380 30" fill="${pal[1]}"/>
+    </g>
+    ${season==="冬"?'<g fill="#dde6f2"><circle cx="90" cy="40" r="2"/><circle cx="150" cy="28" r="1.6"/><circle cx="230" cy="50" r="1.8"/><circle cx="300" cy="34" r="1.4"/><circle cx="450" cy="44" r="1.7"/></g>':''}
+    ${season==="春"?'<g fill="#e8b7b7"><circle cx="70" cy="66" r="2.4"/><circle cx="130" cy="78" r="1.8"/><circle cx="240" cy="88" r="2"/><circle cx="470" cy="82" r="2.2"/></g>':''}
+    ${season==="秋"?'<g fill="#d8a060"><circle cx="110" cy="52" r="1.8"/><circle cx="200" cy="44" r="1.5"/><circle cx="420" cy="58" r="2"/></g>':''}
+  </svg>`;
+}
+function verseHTML(p){
+  if(lang === 'en'){
+    return `<div class="en">${p.en_text}</div><div class="src-en">${p.en_who} · ${p.en_src}</div>`;
+  }
+  const lines = [];
+  let cur = "";
+  for(const c of p.text){
+    if(c === "，" || c === "。"){
+      cur += c; lines.push(cur); cur = "";
+    } else cur += c;
+  }
+  if(cur) lines.push(cur);
+  let html = "";
+  for(const ln of lines.reverse()){
+    html += `<div class="col">${[...ln].map(c => `<span>${c}</span>`).join("")}</div>`;
+  }
+  html += `<div class="src">${p.who} ${p.src}</div>`;
+  return html;
+}
+function loadTalk(md){
+  try{ const r = JSON.parse(localStorage.getItem('qjTalk') || "{}"); return r[md] || {turns:[]}; }catch(e){ return {turns:[]}; }
+}
+function saveTalk(md, talk){
+  let all = {};
+  try{ all = JSON.parse(localStorage.getItem('qjTalk') || "{}"); }catch(e){}
+  all[md] = talk;
+  try{ localStorage.setItem('qjTalk', JSON.stringify(all)); }catch(e){}
+}
+function getReply(p, text, round, used){
+  used = used || [];
+  function pick(list){
+    const rest = list.filter(x => used.indexOf(x) < 0);
+    if(rest.length) return rest[Math.floor(Math.random() * rest.length)];
+    return null; // 池子已耗尽
+  }
+  for(const kw of Object.keys(THEMES)){
+    if(text.indexOf(kw) >= 0){
+      const r = pick(THEMES[kw]);
+      if(r) return r;
+      break; // 主题池耗尽 → 降级人物池
+    }
+  }
+  const rp = pick(REPLIES[p.who] || REPLIES["default"]);
+  if(rp) return rp;
+  return CLOSERS[Math.floor(Math.random() * CLOSERS.length)];
+}
+function talkHTML(p, talk, ended){
+  let html = "";
+  for(const t of talk.turns){
+    html += `<div class="turn"><div class="tm">${lang==='zh'?'你':'You'}</div><div class="tt">${t.mine}</div></div>
+             <div class="turn g"><div class="tm">${lang==='zh'?p.who:p.en_who}</div><div class="tt">「${t.reply}」</div></div>`;
+  }
+  if(ended) html += `<div class="end">${lang==='zh'?'—— 夜深，古人已归。明日再来。':'—— the ancient one has retired. Come again tomorrow.'}</div>`;
+  return html;
+}
+function submitReply(){
+  const ti = todayInfo();
+  const p = todayPost();
+  const inp = document.getElementById("replyIn");
+  const v = inp.value.trim();
+  if(!v){ inp.focus(); return; }
+  const talk = loadTalk(ti.md);
+  const round = talk.turns.length + 1;
+  const used = talk.turns.map(t => t.reply);
+  const reply = getReply(p, v, round, used);
+  talk.turns.push({ mine: v, reply: reply });
+  saveTalk(ti.md, talk);
+  render();
+  const el = document.getElementById("talkEnd");
+  if(el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function render(){
+  const ti = todayInfo();
+  const p = todayPost();
+  document.getElementById("langBtn").textContent = lang === 'zh' ? 'EN' : '中';
+  document.getElementById("dToday").textContent = ti.lunar || "";
+  document.getElementById("dSolar").textContent = lang === 'zh' ? ti.solar : ti.solar.replace(/年|月|日/g, m => ({年:" ",月:"/",日:""})[m]);
+  document.getElementById("period").textContent = t("period")[periodOf()];
+  document.getElementById("footTxt").textContent = t("foot");
+  const talk = loadTalk(ti.md);
+  const turnCount = talk.turns.length;
+  const ended = turnCount >= 5;
+  document.getElementById("card").innerHTML = `
+    <div class="scene">${sceneSVG(p.season)}</div>
+    <div class="body">
+      <div class="verse">${verseHTML(p)}</div>
+      <div class="warm">
+        <div class="who">${lang==='zh' ? p.who + " · " + p.src : p.en_who + " · " + p.en_src}</div>
+        <div class="bai">${lang==='zh' ? p.bai : p.en_bai}</div>
+        <div class="soft">${lang==='zh' ? p.soft : p.en_soft}</div>
+      </div>
+    </div>
+    <div class="reply">
+      <div class="t">${t("reply")}${talk.turns.length ? '（' + turnCount + '/5）' : ''}</div>
+      <div id="talkEnd">${talkHTML(p, talk, ended)}</div>
+      ${ended ? '' : `
+      <div class="row">
+        <input id="replyIn" placeholder="${lang==='zh' ? '在此回应古人……' : 'reply to the ancient one...'}" maxlength="60">
+        <button class="go" onclick="submitReply()">${lang==='zh' ? '发送' : 'Send'}</button>
+      </div>
+      <div class="hint">${t("hint")}</div>`}
+      ${ended ? `<div class="clearRow" style="margin-top:12px;text-align:center">
+        <button class="go" id="clearBtn" onclick="clearTalk()">${t("clear")}</button>
+      </div>` : ''}
+    </div>`;
+  const inp = document.getElementById("replyIn");
+  if(inp){
+    inp.addEventListener("keydown", e => { if(e.key === "Enter"){ e.preventDefault(); submitReply(); } });
+    inp.focus();
+  }
+}
+
+/* ============ 说明 ============ */
+function showHow(){
+  const zh = `<h3>清欢 · 使用说明</h3>
+  <p>· 每天一张「今日一帖」：一幅山水、一句古籍、一段白话、一句抚慰。不必收藏，看完就好。</p>
+  <p>· 「你的回应」：写下你想对古人说的话，<b>回车或点发送</b>——古人会回你一句，最多可聊<b>五轮</b>。他看你的话回，谈雪说雪、诉累慰累。</p>
+  <p>· 聊满五轮后点「清空重聊」可再聊一次，旧对话会自动存入「📚 存档」；顶栏 📚 可随时翻看历史对话。</p>
+  <p>· 对话与回应只存本机，当日保留，明天换一帖。</p>
+  <p>· 右上角可切换晨昏主题、中英文、开关音乐。</p>
+  <p>· 所有数据仅存本机浏览器，不上传、不追踪、可随时清空。</p>
+  <p style="color:var(--dim)">内容摘自历代典籍诗词，为个人学习与日常慰藉之用。</p>`;
+  const en = `<h3>GentleJoy · Guide</h3>
+  <p>· One "post of the day" daily: a landscape, an ancient line, plain words, a gentle note. Just read it.</p>
+  <p>· "Your reply": write to the ancient one, <b>press Enter or Send</b> — he will answer, up to <b>five rounds</b>. He replies to what you say.</p>
+  <p>· After five rounds, tap "Clear & retalk" to chat again — the old talk is auto-saved to the 📚 archive, where you can review any past conversation.</p>
+  <p>· The talk is stored locally, kept for today only.</p>
+  <p>· Top right: theme, language, music.</p>
+  <p>· All data stays in your browser. No uploads, no tracking.</p>`;
+  document.getElementById("modalBox").innerHTML = (lang==='zh'?zh:en) + `<button class="close" onclick="closeHow()">${lang==='zh'?'知道了':'Got it'}</button>`;
+  document.getElementById("modal").classList.add("show");
+}
+function closeHow(){ document.getElementById("modal").classList.remove("show"); }
+function goHome(){ window.scrollTo({top:0, behavior:'smooth'}); }
+
+document.getElementById("modal").addEventListener("click", function(e){ if(e.target === this) closeHow(); });
+
+/* ============ 清空重聊 / 对话存档 / 免责 ============ */
+let clearArm = false;
+function clearTalk(){
+  const ti = todayInfo();
+  const p = todayPost();
+  const talk = loadTalk(ti.md);
+  const btn = document.getElementById("clearBtn");
+  if(!clearArm){
+    clearArm = true;
+    btn.textContent = t("clear2");
+    setTimeout(()=>{ clearArm = false; const b = document.getElementById("clearBtn"); if(b) b.textContent = t("clear"); }, 3000);
+    return;
+  }
+  if(talk.turns.length){
+    let his = [];
+    try{ his = JSON.parse(localStorage.getItem('qjHistory') || "[]"); }catch(e){}
+    his.unshift({ date: ti.solar, who: p.who, en_who: p.en_who, turns: talk.turns });
+    try{ localStorage.setItem('qjHistory', JSON.stringify(his.slice(0, 30))); }catch(e){}
+  }
+  try{
+    const all = JSON.parse(localStorage.getItem('qjTalk') || "{}");
+    delete all[ti.md];
+    localStorage.setItem('qjTalk', JSON.stringify(all));
+  }catch(e){}
+  clearArm = false;
+  render();
+}
+function showHistory(){
+  let his = [];
+  try{ his = JSON.parse(localStorage.getItem('qjHistory') || "[]"); }catch(e){}
+  let h = `<h3>📚 ${t("history")}</h3>`;
+  if(!his.length){
+    h += `<p style="color:var(--dim)">${t("empty")}</p>`;
+  } else {
+    for(const it of his){
+      const who = lang === 'zh' ? it.who : (it.en_who || it.who);
+      h += `<div style="margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;line-height:1.9">
+        <b style="color:var(--gold)">${it.date}</b> · ${who} · ${it.turns.length} ${t("rounds")}
+        ${it.turns.map(tn=>`<div style="margin-top:6px"><span style="color:var(--dim)">${lang==='zh'?'你':'You'}：</span>${tn.mine}<br><span style="color:var(--accent)">${who}：</span>${tn.reply}</div>`).join('')}
+      </div>`;
+    }
+  }
+  document.getElementById("modalBox").innerHTML = h + `<button class="close" onclick="closeHow()">${lang==='zh'?'知道了':'Got it'}</button>`;
+  document.getElementById("modal").classList.add("show");
+}
+function showDisclaimer(){
+  const zh = `<h3>⚠️ 免责声明</h3>
+  <p>· 「清欢」是一款古籍文化日签工具，内容摘自《诗经》《世说新语》《全唐诗》等历代典籍诗词，仅供个人学习、欣赏与日常慰藉之用。</p>
+  <p>· 「与古人对话」为预设内容的模拟互动，非史实考证，亦非任何形式的占卜、预测或建议。</p>
+  <p>· 本应用不构成医疗、心理、法律或理财等专业意见；如遇身心困扰，请及时寻求专业帮助。</p>
+  <p>· 所有数据仅存于你的设备浏览器中，不采集、不上传、不追踪。</p>
+  <p>· 内容按现状提供，作者不对使用本应用产生的任何后果承担责任。</p>`;
+  const en = `<h3>⚠️ Disclaimer</h3>
+  <p>· GentleJoy is a cultural daily-post tool. Contents are excerpts from classical Chinese texts for personal learning and enjoyment only.</p>
+  <p>· The "talk to the ancients" feature is a scripted simulation, not historical research, divination, or any kind of advice.</p>
+  <p>· This app does not provide medical, psychological, legal or financial advice. Seek professional help when needed.</p>
+  <p>· All data stays in your browser. No collection, no uploads, no tracking.</p>
+  <p>· Provided as-is; the author assumes no liability for any consequences of use.</p>`;
+  document.getElementById("modalBox").innerHTML = (lang==='zh'?zh:en) + `<button class="close" onclick="closeHow()">${lang==='zh'?'知道了':'Got it'}</button>`;
+  document.getElementById("modal").classList.add("show");
+}
+render();
+</script>
+</body>
+</html>
