@@ -92,10 +92,10 @@ body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','
         <a onclick="toggleTheme()">☀/🌙</a>
         <a id="langBtn" onclick="toggleLang()">EN</a>
         <a onclick="showHow()">说明</a>
-        <a onclick="go('yao')">🌿</a>
-        <a onclick="go('fav')">♥</a>
-        <a onclick="showHistory()">📚</a>
-        <a onclick="showDisclaimer()">⚠️</a>
+        <a onclick="go('yao')"><span id="lblYao">🌿 药柜</span></a>
+        <a onclick="go('fav')"><span id="lblFav">♥ 集帖册</span></a>
+        <a onclick="showHistory()"><span id="lblHis">📚 存档</span></a>
+        <a onclick="showDisclaimer()"><span id="lblDis">⚠️ 免责</span></a>
       </div>
     </div>
   </div>
@@ -392,8 +392,8 @@ document.addEventListener('touchstart', function onceT(){
 
 /* ============ 语言 ============ */
 const UI = {
-  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", yao:"药柜 · 按心事取一帖", fav:"我的集帖册", noFav:"还没有收藏 · 在帖子上点 ♥ 收藏", favAdd:"♥ 收藏此帖", favAdded:"♥ 已收藏", favCancel:"取消收藏", exportAll:"导出全部", copied:"已复制", all:"全部", nextPost:"换一帖", themes:["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志"], foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
-  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", yao:"Herbal cabinet · pick a post by your mood", fav:"My collection", noFav:"Nothing collected yet · tap ♥ on a post", favAdd:"♥ Collect", favAdded:"♥ Collected", favCancel:"Remove", exportAll:"Export all", copied:"Copied", all:"All", nextPost:"Next post", themes:["Ease","Warmth","Longing","Landscape","Plants","Time","Wine & Tea","Solitude","Night","Aspiration"], foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
+  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", yao:"药柜 · 按心事取一帖", fav:"我的集帖册", noFav:"还没有收藏 · 在帖子上点 ♥ 收藏", favAdd:"♥ 收藏此帖", favAdded:"♥ 已收藏", favCancel:"取消收藏", exportAll:"导出全部", copied:"已复制", all:"全部", nextPost:"换一帖", themes:["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志","疲惫","忙碌","喜悦","静心","归乡","离别"], foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
+  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", yao:"Herbal cabinet · pick a post by your mood", fav:"My collection", noFav:"Nothing collected yet · tap ♥ on a post", favAdd:"♥ Collect", favAdded:"♥ Collected", favCancel:"Remove", exportAll:"Export all", copied:"Copied", all:"All", nextPost:"Next post", themes:["Ease","Warmth","Longing","Landscape","Plants","Time","Wine & Tea","Solitude","Night","Aspiration","Tiredness","Busyness","Joy","Stillness","Homecoming","Farewell"], foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
 };
 function t(k){ return (UI[lang] || UI.zh)[k]; }
 function toggleLang(){ lang = lang === 'zh' ? 'en' : 'zh'; try{ localStorage.setItem('qjLang', lang); }catch(e){} render(); }
@@ -517,6 +517,11 @@ function render(){
   document.getElementById("langBtn").textContent = lang === 'zh' ? 'EN' : '中';
   const bs = document.getElementById("btnSound");
   if(bs) bs.textContent = soundOn ? '♪ 开' : '♪ 关';
+  const lb = { yao: lang==='zh' ? '🌿 药柜' : '🌿 Cabinet', fav: lang==='zh' ? '♥ 集帖册' : '♥ Saved', his: lang==='zh' ? '📚 存档' : '📚 Logs', dis: lang==='zh' ? '⚠️ 免责' : '⚠️ Note' };
+  if(document.getElementById("lblYao")) document.getElementById("lblYao").textContent = lb.yao;
+  if(document.getElementById("lblFav")) document.getElementById("lblFav").textContent = lb.fav;
+  if(document.getElementById("lblHis")) document.getElementById("lblHis").textContent = lb.his;
+  if(document.getElementById("lblDis")) document.getElementById("lblDis").textContent = lb.dis;
   document.getElementById("dToday").textContent = ti.lunar || "";
   document.getElementById("dSolar").textContent = lang === 'zh' ? ti.solar : ti.solar.replace(/年|月|日/g, m => ({年:" ",月:"/",日:""})[m]);
   document.getElementById("period").textContent = t("period")[periodOf()];
@@ -586,17 +591,23 @@ function go(name){
 }
 
 /* ============ 药柜（按心事取帖） + 集帖册（收藏） ============ */
-const THEME_KEYS = ["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志"];
+const THEME_KEYS = ["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志","疲惫","忙碌","喜悦","静心","归乡","离别"];
 const THEME_RULES = [
-  ["孤独", /孤|独钓|独坐|寂寞|无客|空山/],
-  ["思念", /思|忆|故人|相思|望月|故乡|家书|归/],
+  ["疲惫", /累|倦|疲|乏|困|懒/],
+  ["忙碌", /忙/],
+  ["喜悦", /喜|悦|欣/],
+  ["静心", /静|禅|清心|听雨|澄/],
+  ["归乡", /归|还家|夜归|故里|家书/],
+  ["励志", /少年|志|奋|功名|天涯|长风|沧海|何惧|莫愁|破浪/],
+  ["离别", /别|送|挥手|远行/],
+  ["思念", /思|忆|故人|相思|望月|故乡|念|牵挂/],
   ["酒茶", /酒|杯|茶|饮|醉/],
+  ["温暖", /暖|火炉|炉|亲|温|围炉/],
+  ["夜晚", /月|星|夜|眠|烛|梦/],
+  ["孤独", /孤|独钓|独坐|寂寞|无客|空山/],
   ["山水", /山|水|江|河|溪|舟|湖|海|泉/],
   ["草木", /花|草|柳|杏|桃|梅|荷|菊|松|竹|兰|桂/],
-  ["时光", /年|春|秋|雪|日|夜|岁|霜|白发|时光|流年/],
-  ["励志", /少年|志|奋|功名|天涯|长风|沧海|何惧/],
-  ["温暖", /暖|火炉|灯|亲|家|归|温/],
-  ["夜晚", /月|星|灯|夜|眠|烛/],
+  ["时光", /年|春|秋|雪|日|岁|霜|白发|时光|流年/],
 ];
 function themeOf(p){
   const txt = (p.text + p.bai + p.soft);
