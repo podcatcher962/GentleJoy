@@ -59,6 +59,11 @@ body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','
 .reply .go:disabled{opacity:.35;cursor:default}
 .reply .hint{font-size:12.5px;color:var(--dim);margin-top:6px;letter-spacing:1px}
 .reply .end{font-size:14.5px;color:var(--gold);margin-top:10px;line-height:1.9}
+/* 药柜/集帖册 */
+.yao-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:6px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--dim);border-radius:20px;padding:6px 14px;font-family:inherit;font-size:13px;letter-spacing:1px;cursor:pointer}
+.chip:hover{border-color:var(--gold);color:var(--gold)}
+.chip.on{background:var(--gold);color:#fff;border-color:var(--gold)}
 /* 说明 modal */
 #modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px}
 #modal.show{display:flex}
@@ -87,6 +92,8 @@ body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','
         <a onclick="toggleTheme()">☀/🌙</a>
         <a id="langBtn" onclick="toggleLang()">EN</a>
         <a onclick="showHow()">说明</a>
+        <a onclick="go('yao')">🌿</a>
+        <a onclick="go('fav')">♥</a>
         <a onclick="showHistory()">📚</a>
         <a onclick="showDisclaimer()">⚠️</a>
       </div>
@@ -301,8 +308,8 @@ document.addEventListener('touchstart', function onceT(){
 
 /* ============ 语言 ============ */
 const UI = {
-  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
-  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
+  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", yao:"药柜 · 按心事取一帖", fav:"我的集帖册", noFav:"还没有收藏 · 在帖子上点 ♥ 收藏", favAdd:"♥ 收藏此帖", favAdded:"♥ 已收藏", favCancel:"取消收藏", exportAll:"导出全部", copied:"已复制", all:"全部", nextPost:"换一帖", themes:["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志"], foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
+  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", yao:"Herbal cabinet · pick a post by your mood", fav:"My collection", noFav:"Nothing collected yet · tap ♥ on a post", favAdd:"♥ Collect", favAdded:"♥ Collected", favCancel:"Remove", exportAll:"Export all", copied:"Copied", all:"All", nextPost:"Next post", themes:["Ease","Warmth","Longing","Landscape","Plants","Time","Wine & Tea","Solitude","Night","Aspiration"], foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
 };
 function t(k){ return (UI[lang] || UI.zh)[k]; }
 function toggleLang(){ lang = lang === 'zh' ? 'en' : 'zh'; try{ localStorage.setItem('qjLang', lang); }catch(e){} render(); }
@@ -443,6 +450,9 @@ function render(){
         <div class="soft">${lang==='zh' ? p.soft : p.en_soft}</div>
       </div>
     </div>
+    <div style="text-align:center;margin:12px 0 2px">
+      <button class="chip" id="favBtn" onclick="toggleFav(${POSTS.indexOf(p)})">${loadFav().indexOf(POSTS.indexOf(p)) >= 0 ? t("favAdded") : t("favAdd")}</button>
+    </div>
     <div class="reply">
       <div class="t">${t("reply")}${talk.turns.length ? '（' + turnCount + '/5）' : ''}</div>
       <div id="talkEnd">${talkHTML(p, talk, ended)}</div>
@@ -485,6 +495,137 @@ function showHow(){
 }
 function closeHow(){ document.getElementById("modal").classList.remove("show"); }
 function goHome(){ window.scrollTo({top:0, behavior:'smooth'}); }
+function go(name){
+  if(name === 'yao') renderYao();
+  else if(name === 'fav') renderFav();
+  else render();
+}
+
+/* ============ 药柜（按心事取帖） + 集帖册（收藏） ============ */
+const THEME_KEYS = ["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志"];
+const THEME_RULES = [
+  ["孤独", /孤|独钓|独坐|寂寞|无客|空山/],
+  ["思念", /思|忆|故人|相思|望月|故乡|家书|归/],
+  ["酒茶", /酒|杯|茶|饮|醉/],
+  ["山水", /山|水|江|河|溪|舟|湖|海|泉/],
+  ["草木", /花|草|柳|杏|桃|梅|荷|菊|松|竹|兰|桂/],
+  ["时光", /年|春|秋|雪|日|夜|岁|霜|白发|时光|流年/],
+  ["励志", /少年|志|奋|功名|天涯|长风|沧海|何惧/],
+  ["温暖", /暖|火炉|灯|亲|家|归|温/],
+  ["夜晚", /月|星|灯|夜|眠|烛/],
+];
+function themeOf(p){
+  const txt = (p.text + p.bai + p.soft);
+  for(const [k, re] of THEME_RULES){
+    if(re.test(txt)) return k;
+  }
+  return "闲适";
+}
+function loadFav(){ try{ return JSON.parse(localStorage.getItem('qjFav') || "[]"); }catch(e){ return []; } }
+function saveFav(list){ try{ localStorage.setItem('qjFav', JSON.stringify(list)); }catch(e){} }
+function toggleFav(idx){
+  let list = loadFav();
+  const i = list.indexOf(idx);
+  if(i >= 0){ list.splice(i, 1); } else { list.unshift(idx); }
+  saveFav(list);
+  const btn = document.getElementById('favBtn');
+  if(btn) btn.textContent = (list.indexOf(idx) >= 0) ? t("favAdded") : t("favAdd");
+}
+let yaoTheme = "全部";
+let yaoPost = null;
+function renderYao(){
+  const themes = t("themes");
+  const list = THEME_KEYS;
+  let h = `<div class="sec-h" style="margin-bottom:14px"><span class="bar"></span><h2>🌿 ${t("yao")}</h2><span class="bar"></span></div>`;
+  h += `<div class="yao-chips">`;
+  const chips = ["全部"].concat(list);
+  for(let i = 0; i < chips.length; i++){
+    const cn = chips[i];
+    h += `<button class="chip${cn === yaoTheme ? ' on' : ''}" onclick="pickYao('${cn}')">${cn === '全部' ? t("all") : themes[i]}</button>`;
+  }
+  h += `</div><div style="height:8px"></div>`;
+  const card = document.getElementById("card");
+  // 按主题筛帖
+  const pool = yaoTheme === "全部" ? POSTS : POSTS.filter(p => themeOf(p) === yaoTheme);
+  if(!yaoPost || (yaoTheme !== '全部' && themeOf(yaoPost) !== yaoTheme)){
+    yaoPost = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+  }
+  if(yaoPost){
+    const p = yaoPost;
+    const idx = POSTS.indexOf(p);
+    const fav = loadFav().indexOf(idx) >= 0;
+    h += `<div class="card" style="max-width:460px;margin:0 auto">
+      <div class="scene" style="height:70px">${sceneSVG(p.season)}</div>
+      <div class="body">
+        <div class="verse" style="justify-content:center">${verseHTML(p)}</div>
+        <div class="warm" style="text-align:center">
+          <div class="who">${lang==='zh' ? p.who + " · " + p.src : p.en_who + " · " + p.en_src}</div>
+          <div class="bai">${lang==='zh' ? p.bai : p.en_bai}</div>
+          <div class="soft">${lang==='zh' ? p.soft : p.en_soft}</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin:14px 0 4px">
+        <button class="chip" id="favBtn" onclick="toggleFav(${idx})">${fav ? t("favAdded") : t("favAdd")}</button>
+      </div>
+      <div style="text-align:center"><span style="font-size:12px;color:var(--dim)">${lang==='zh'?'主题 · ':''}${themes[THEME_KEYS.indexOf(themeOf(p))]} · ${pool.length} ${lang==='zh'?'帖':'posts'}</span></div>
+    </div>`;
+  } else {
+    h += `<p style="text-align:center;color:var(--dim);margin-top:40px">${lang==='zh'?'此主题暂无帖子':'No posts in this theme yet'}</p>`;
+  }
+  h += `<div style="text-align:center;margin-top:16px"><button class="go" onclick="pickYao('${yaoTheme}')">${t("nextPost")}</button></div>`;
+  h += `<div style="text-align:center;margin-top:10px"><a class="go" style="text-decoration:none" onclick="render()">← ${lang==='zh'?'今日一帖':'Today'}</a></div>`;
+  card.innerHTML = h;
+  window.scrollTo({top:0});
+}
+function pickYao(th){
+  yaoTheme = th; yaoPost = null;
+  renderYao();
+}
+function renderFav(){
+  const fav = loadFav();
+  let h = `<div class="sec-h" style="margin-bottom:14px"><span class="bar"></span><h2>♥ ${t("fav")}</h2><span class="bar"></span></div>`;
+  if(!fav.length){
+    h += `<p style="text-align:center;color:var(--dim);margin-top:40px;line-height:2">${t("noFav")}</p>`;
+  } else {
+    for(const idx of fav){
+      const p = POSTS[idx];
+      if(!p) continue;
+      h += `<div class="card" style="max-width:460px;margin:0 auto 14px">
+        <div class="scene" style="height:56px">${sceneSVG(p.season)}</div>
+        <div class="body">
+          <div class="verse" style="justify-content:center">${verseHTML(p)}</div>
+          <div class="warm" style="text-align:center">
+            <div class="who">${lang==='zh' ? p.who + " · " + p.src : p.en_who + " · " + p.en_src}</div>
+            <div class="bai">${lang==='zh' ? p.bai : p.en_bai}</div>
+            <div class="soft">${lang==='zh' ? p.soft : p.en_soft}</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin:10px 0 2px"><button class="chip" onclick="toggleFav(${idx});renderFav()">${t("favCancel")}</button></div>
+      </div>`;
+    }
+    h += `<div style="text-align:center;margin-top:16px"><button class="go" onclick="exportFav()">📤 ${t("exportAll")}</button></div>`;
+  }
+  h += `<div style="text-align:center;margin-top:10px"><a class="go" style="text-decoration:none" onclick="render()">← ${lang==='zh'?'今日一帖':'Today'}</a></div>`;
+  document.getElementById("card").innerHTML = h;
+  window.scrollTo({top:0});
+}
+function exportFav(){
+  const fav = loadFav();
+  const lines = [];
+  for(const idx of fav){
+    const p = POSTS[idx];
+    if(!p) continue;
+    lines.push('「' + p.text + '」—— ' + p.who + '《' + p.src + '》\n' + p.bai + '\n' + p.soft);
+  }
+  const txt = '清欢 · 我的集帖册\n\n' + lines.join('\n\n');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ alert(t("copied")); });
+  } else {
+    const ta = document.createElement('textarea'); ta.value = txt;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    alert(t("copied"));
+  }
+}
 
 document.getElementById("modal").addEventListener("click", function(e){ if(e.target === this) closeHow(); });
 
