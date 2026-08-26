@@ -79,7 +79,9 @@ body{background:var(--bg);color:var(--ink);font-family:'FangSong','STFangsong','
 </head>
 <body>
 
-<div id="splash"></div>
+<div id="splash" onclick="skipSplash()">
+  <span style="position:fixed;right:26px;bottom:34px;color:#8a6a35;font-size:13px;letter-spacing:2px;opacity:.7">跳过 ›</span>
+</div>
 
 <audio id="bgm" loop src="audio/qinxiao.mp3"></audio>
 
@@ -282,7 +284,91 @@ const POSTS = [
 {text:"冻笔新诗懒写，寒炉美酒时温",who:"李白",src:"立冬",bai:"笔冻了懒得写诗，炉上的美酒时时温热。",soft:"冬天允许偷懒。今天不想努力，就温一杯酒，也算好好过了一天。",season:"冬",
  en_text:"The frozen brush is too lazy for new verse; good wine warms at the cold stove.",en_who:"Li Bai",en_src:"Beginning of Winter",en_bai:"Lazy pen, warm wine.",en_soft:"Winter allows laziness. If you have no energy today, warm a cup of wine — that counts as a well-lived day."},
 {text:"千门万户曈曈日，总把新桃换旧符",who:"王安石",src:"元日",bai:"初升的太阳照亮千家万户，家家换上新的桃符。",soft:"旧符总会被新符替换。你也是：旧的篇章翻过，新的正在贴上门。",season:"冬",
- en_text:"A bright sun over ten thousand doors; everyone changes old charms for new.",en_who:"Wang Anshi",en_src:"New Year's Day",en_bai:"New sun, new charms.",en_soft:"Old charms are always replaced by new ones. So it is with you: the old chapter turns, and something new is being posted at your door."}
+ en_text:"A bright sun over ten thousand doors; everyone changes old charms for new.",en_who:"Wang Anshi",en_src:"New Year's Day",en_bai:"New sun, new charms.",en_soft:"Old charms are always replaced by new ones. So it is with you: the old chapter turns, and something new is being posted at your door."},
+/* ---- 春（三） ---- */
+{text:"春宵一刻值千金，花有清香月有阴",who:"苏轼",src:"春宵",bai:"春夜一刻值千金，花有清香，月有花影。",soft:"千金难买的不是别的，是当下这一刻。你正拥有的今晚，也是千金。",season:"春",
+ en_text:"A spring night is worth a thousand gold — flowers have fragrance, the moon has shade.",en_who:"Su Shi",en_src:"Spring Night",en_bai:"A precious spring evening.",en_soft:"What is worth a thousand gold is not something else — it is this very moment. The night you have right now is worth it too."},
+{text:"双飞燕子几时回？夹岸桃花蘸水开",who:"徐俯",src:"春游湖",bai:"双飞的燕子几时回来？两岸桃花贴着水面开。",soft:"燕子会回来，花会再开，人也会。别急，都在路上。",season:"春",
+ en_text:"When did the twin swallows return? Peach blossoms by both banks lean into the water.",en_who:"Xu Fu",en_src:"Spring Walk by the Lake",en_bai:"Swallows back, blossoms open.",en_soft:"Swallows return, blossoms reopen, people recover too. Do not rush — it is all on its way."},
+{text:"草树知春不久归，百般红紫斗芳菲",who:"韩愈",src:"晚春",bai:"草木知道春快走了，争着开出百般红紫。",soft:"春天要走，草木就用力开一场。你也不必怕结束，趁还在，好好活。",season:"春",
+ en_text:"Grass and trees know spring is leaving; they vie in reds and purples to bloom.",en_who:"Han Yu",en_src:"Late Spring",en_bai:"Blooms racing before spring ends.",en_soft:"Spring is leaving, so plants bloom with all their might. Do not fear endings either — while you are here, live well."},
+{text:"春阴垂野草青青，时有幽花一树明",who:"苏舜钦",src:"淮中晚泊犊头",bai:"春云低垂原野青碧，不时有一树幽花格外明亮。",soft:"阴天里也有亮着的一树花。你灰暗的时候，也别忘了自己身上那点亮。",season:"春",
+ en_text:"Spring clouds hang low, fields green; now and then a quiet tree of blossoms glows.",en_who:"Su Shunqin",en_src:"Mooring at Dutou on the Huai River",en_bai:"Grey sky, one bright tree.",en_soft:"Even on a grey day, one tree of blossoms glows. When you feel dim, remember the light in you too."},
+{text:"东风夜放花千树，更吹落、星如雨",who:"辛弃疾",src:"青玉案·元夕",bai:"东风一夜吹开千树灯火，如星如雨洒落。",soft:"热闹是别人的，也可以是你的。今夜出门走走，把灯火看进眼里。",season:"春",
+ en_text:"The east wind sets ten thousand trees of lanterns blooming, then blows down stars like rain.",en_who:"Xin Qiji",en_src:"Green Jade Table · Lantern Festival",en_bai:"A night of ten thousand lights.",en_soft:"Festivity can be someone else's — or yours. Step out tonight and take the lights into your eyes."},
+{text:"春风得意马蹄疾，一日看尽长安花",who:"孟郊",src:"登科后",bai:"春风里马蹄轻快，一天看尽长安的花。",soft:"得意时要记得跑得快，也要记得看花。两样都要。",season:"春",
+ en_text:"Triumphant in the spring wind, the horse gallops fast — in one day he sees all the blooms of Chang'an.",en_who:"Meng Jiao",en_src:"After Passing the Examination",en_bai:"Fast horse, full spring.",en_soft:"In triumph, gallop fast — but also remember to look at the blossoms. Keep both."},
+{text:"乱花渐欲迷人眼，浅草才能没马蹄",who:"白居易",src:"钱塘湖春行",bai:"繁花渐迷人眼，浅草刚没过马蹄。",soft:"花太多也会看花眼。慢慢走，看一朵是一朵。",season:"春",
+ en_text:"Dazzling blossoms blur the eyes; shallow grass barely covers the horse's hooves.",en_who:"Bai Juyi",en_src:"Spring Stroll on Qiantang Lake",en_bai:"Blossoms everywhere, grass underfoot.",en_soft:"Too many flowers can dazzle you. Walk slowly — one bloom at a time is enough."},
+{text:"春水碧于天，画船听雨眠",who:"韦庄",src:"菩萨蛮",bai:"春水比天还碧，躺在画船里听雨入睡。",soft:"最好的休息不是什么都不做，是在对的风景里，什么都可以不做。",season:"春",
+ en_text:"Spring water is greener than the sky; in a painted boat I sleep to the rain.",en_who:"Wei Zhuang",en_src:"Buddhist Dancers",en_bai:"Sleeping to rain on green water.",en_soft:"The best rest is not doing nothing anywhere — it is being in the right scenery, where doing nothing is enough."},
+{text:"燕子来时新社，梨花落后清明",who:"晏殊",src:"破阵子",bai:"燕子来时是春社，梨花落后是清明。",soft:"节令一个接一个，日子一天挨一天。不必赶，你也在节气里。",season:"春",
+ en_text:"Swallows come with the spring festival; pear blossoms fall at Qingming.",en_who:"Yan Shu",en_src:"Breaking Formations",en_bai:"Seasons turning gently.",en_soft:"Festivals follow one another, days lean on days. No need to rush — you are inside the seasons too."},
+{text:"云淡风轻近午天，傍花随柳过前川",who:"程颢",src:"春日偶成",bai:"云淡风轻近正午，沿着花柳走过河边。",soft:"春天的午间，适合无目的地走。走到哪算哪，也算一日。",season:"春",
+ en_text:"Clouds pale, wind soft, near noon; by flowers and willows I pass the stream.",en_who:"Cheng Hao",en_src:"Impromptu on a Spring Day",en_bai:"A gentle walk at noon.",en_soft:"Spring noons are made for wandering without a destination. Wherever you end up counts as a day lived."},
+/* ---- 夏（三） ---- */
+{text:"乳鸭池塘水浅深，熟梅天气半晴阴",who:"戴复古",src:"初夏游张园",bai:"小鸭在池塘戏水，梅熟时节天气半晴半阴。",soft:"半晴半阴的天气也值得过。你不需要每天都是大晴天。",season:"夏",
+ en_text:"Ducklings in the pond, water now deep now shallow; plum-ripe weather, half sun half shade.",en_who:"Dai Fugu",en_src:"Visiting Zhang's Garden in Early Summer",en_bai:"Half sun, half shade.",en_soft:"Half-sunny weather is worth living too. You do not need every day to be a clear sky."},
+{text:"风蒲猎猎小池塘，过雨荷花满院香",who:"李重元",src:"忆王孙·夏词",bai:"风过蒲苇猎猎响，雨后的荷花开满院香。",soft:"雨把院子洗过一遍，香气才透出来。你淋过的那些雨，也在替你酝酿香。",season:"夏",
+ en_text:"Wind rattles the reeds by the small pond; after rain, lotus fills the yard with fragrance.",en_who:"Li Chongyuan",en_src:"Remembering the Prince · Summer",en_bai:"Rain-washed lotus, full-yard scent.",en_soft:"Rain washes the yard before the fragrance comes through. The rain you have weathered is brewing your scent too."},
+{text:"更无柳絮因风起，惟有葵花向日倾",who:"司马光",src:"客中初夏",bai:"没有柳絮随风起，只有葵花朝太阳倾。",soft:"柳絮飘忽，葵花执着。做前者随缘，做后者安心——都好。",season:"夏",
+ en_text:"No willow fluff drifts in the wind; only the sunflower leans toward the sun.",en_who:"Sima Guang",en_src:"Early Summer Away from Home",en_bai:"One flower, always facing light.",en_soft:"Willow fluff drifts; the sunflower follows the sun. Drifting is fine, and so is staying steady — both are ways to live."},
+{text:"绿荫不减来时路，添得黄鹂四五声",who:"曾几",src:"三衢道中",bai:"绿荫和来时一样浓，还添了几声黄鹂叫。",soft:"同样的路，多几声鸟叫就不一样。日子也是这样，留意一点，就有新声。",season:"夏",
+ en_text:"Shade as deep as the way in, plus two or three orioles' songs.",en_who:"Zeng Ji",en_src:"On the Sanqu Road",en_bai:"Same road, new birdsong.",en_soft:"The same road changes with a few extra songs. Days work the same — notice, and you will hear something new."},
+{text:"松阴一架半弓苔，偶欲看书又懒开",who:"杨万里",src:"闲居初夏午睡起",bai:"松阴下苔藓半架，想看书又懒得翻开。",soft:"夏天读书，翻两页打个盹，也算读了。别给自己太大负担。",season:"夏",
+ en_text:"A rack of pine shade on half a bow of moss; I think of reading, then feel too lazy to open the book.",en_who:"Yang Wanli",en_src:"Waking from a Summer Nap",en_bai:"Reading, then laziness.",en_soft:"In summer, two pages and a nap still counts as reading. Do not burden yourself too much."},
+{text:"日长睡起无情思，闲看儿童捉柳花",who:"杨万里",src:"闲居初夏午睡起二绝句",bai:"午睡起来没精神，闲看儿童追捉柳花。",soft:"午睡醒来的发呆时光，是夏天给成年人的小假。发呆不丢人。",season:"夏",
+ en_text:"Waking from the long day's nap, no thoughts; idly watching children chase willow fluff.",en_who:"Yang Wanli",en_src:"Two Quatrains after a Summer Nap",en_bai:"A dozy afternoon.",en_soft:"The dazed hour after a summer nap is a small holiday for grown-ups. Daydreaming is not shameful."},
+{text:"纷纷红紫已成尘，布谷声中夏令新",who:"陆游",src:"初夏绝句",bai:"春花纷纷落尽成尘，布谷声里夏天到来。",soft:"花落是旧的谢幕，布谷是新日开场。你也不必留恋谢幕。",season:"夏",
+ en_text:"The reds and purples have turned to dust; amid cuckoo calls, summer begins anew.",en_who:"Lu You",en_src:"Quatrain on Early Summer",en_bai:"Old blooms fall, new season comes.",en_soft:"Falling blossoms are an old curtain call; the cuckoo opens a new day. You need not cling to what has left."},
+{text:"荷花开后西湖好，载酒来时",who:"欧阳修",src:"采桑子",bai:"荷花开后的西湖最好，带着酒来正好。",soft:"有些风景要等到花开后才最好。有些日子，要熬过去才最值得回味。",season:"夏",
+ en_text:"West Lake is best after the lotus blooms — come with wine in hand.",en_who:"Ouyang Xiu",en_src:"Picking Mulberries",en_bai:"Lotus season, best time.",en_soft:"Some scenery is best after the blooms open. Some days are best savored after you have lived through them."},
+{text:"清风明月无人管，并作南楼一味凉",who:"黄庭坚",src:"鄂州南楼书事",bai:"清风明月没人管，一起化作南楼一味清凉。",soft:"风月免费，凉意免费。这个夏天，先取这两样。",season:"夏",
+ en_text:"The cool breeze and bright moon, owned by no one, together become one coolness at the south tower.",en_who:"Huang Tingjian",en_src:"Written at the South Tower of Ezhou",en_bai:"Free wind, free moon, free cool.",en_soft:"Wind and moon cost nothing, and so does coolness. This summer, take those two first."},
+{text:"连雨不知春去，一晴方觉夏深",who:"范成大",src:"喜晴",bai:"连日下雨不知春已去，天晴才发现夏已深。",soft:"很多变化都是在不知不觉里完成的。等天晴时你才发觉，原来已经走了这么远。",season:"夏",
+ en_text:"Rain after rain, spring left unnoticed; one clear day reveals summer is deep.",en_who:"Fan Chengda",en_src:"Glad for Clear Weather",en_bai:"A clear day after long rain.",en_soft:"Many changes happen without our noticing. When the sky clears, you realize how far you have already come."},
+/* ---- 秋（三） ---- */
+{text:"秋风起兮白云飞，草木黄落兮雁南归",who:"刘彻",src:"秋风辞",bai:"秋风起白云飞，草木枯黄，大雁南归。",soft:"草木黄落是为了轮回，大雁南归是为了再来。你的低谷也是。",season:"秋",
+ en_text:"Autumn wind rises, white clouds fly; plants yellow and fall, wild geese head south.",en_who:"Liu Che",en_src:"Song of the Autumn Wind",en_bai:"Wind, clouds, geese going home.",en_soft:"Plants let go for the cycle; geese fly south to return. Your low season is the same."},
+{text:"独上江楼思渺然，月光如水水如天",who:"赵嘏",src:"江楼旧感",bai:"独自登江楼思绪渺远，月光如水，水如天。",soft:"一个人上楼也没关系。月光会陪你站一会儿。",season:"秋",
+ en_text:"Alone on the river tower, thoughts drift far; moonlight like water, water like sky.",en_who:"Zhao Gu",en_src:"Old Feelings at the River Tower",en_bai:"Moonlight on water, water on sky.",en_soft:"Going up alone is fine. The moonlight will stand with you for a while."},
+{text:"山明水净夜来霜，数树深红出浅黄",who:"刘禹锡",src:"秋词二首",bai:"山明水净夜降霜，几树深红从浅黄里显出来。",soft:"秋天不是只有灰。深红、浅黄、青灰，调在一起才是秋。",season:"秋",
+ en_text:"Hills bright, water clear, frost at night; trees of deep red rise from pale yellow.",en_who:"Liu Yuxi",en_src:"Two Autumn Poems",en_bai:"Deep red against pale gold.",en_soft:"Autumn is not only grey. Deep red, pale gold, soft grey — mixed together, that is autumn."},
+{text:"欲说还休，却道天凉好个秋",who:"辛弃疾",src:"丑奴儿·书博山道中壁",bai:"想说什么又咽回去，只说了句：天凉好个秋。",soft:"有些话说不出口，就说说天气。天气永远接得住你。",season:"秋",
+ en_text:"I want to speak, then stop — and only say: what a cool autumn day.",en_who:"Xin Qiji",en_src:"Ugly Slave · Written on Boshan Road",en_bai:"Words unsaid, weather spoken.",en_soft:"Some things are hard to say — talk about the weather instead. The weather always catches you."},
+{text:"秋色渐将晚，霜信报黄花",who:"叶梦得",src:"水调歌头",bai:"秋色渐深，霜降的消息由菊花传来。",soft:"菊花不是秋天里唯一的颜色，但它是按时来的那个。你也按时来就好。",season:"秋",
+ en_text:"Autumn colors grow late; frost's news arrives with the yellow blooms.",en_who:"Ye Mengde",en_src:"Water Melody",en_bai:"Frost on the chrysanthemum.",en_soft:"Chrysanthemum is not autumn's only color, but it is the one that arrives on time. Arriving on time is enough for you too."},
+{text:"今夜月明人尽望，不知秋思落谁家",who:"王建",src:"十五夜望月",bai:"今夜明月人人仰望，不知秋思落在谁家。",soft:"望月的夜里，想家的人不止你一个。抬头的人，都懂。",season:"秋",
+ en_text:"Tonight everyone gazes at the bright moon — no one knows whose home the autumn longing falls on.",en_who:"Wang Jian",en_src:"Gazing at the Moon on the Fifteenth Night",en_bai:"One moon, many longings.",en_soft:"On moonlit nights, you are not the only one missing home. Everyone looking up understands."},
+{text:"未觉池塘春草梦，阶前梧叶已秋声",who:"朱熹",src:"劝学诗",bai:"还像在春草梦里，阶前梧桐已响起秋声。",soft:"时间不等人，但也不用怕。春梦秋声，各有各的好。",season:"秋",
+ en_text:"Still dreaming of spring grass by the pond; already the parasol leaves sound of autumn at the steps.",en_who:"Zhu Xi",en_src:"Poem Encouraging Study",en_bai:"Spring dream, autumn sound.",en_soft:"Time waits for no one — but do not fear it. Spring dreams and autumn sounds each have their goodness."},
+{text:"满载一船秋色，平铺十里湖光",who:"张孝祥",src:"西江月",bai:"一船装满了秋色，湖光平铺十里。",soft:"把秋色装满船，把湖光铺开看。今天也给自己装一船好看的东西。",season:"秋",
+ en_text:"A boat loaded with autumn colors; ten li of lake light spread flat.",en_who:"Zhang Xiaoxiang",en_src:"Moon over the West River",en_bai:"A boatful of autumn.",en_soft:"Fill the boat with autumn, spread out the lake light. Today, load yourself with something beautiful too."},
+{text:"南山与秋色，气势两相高",who:"杜牧",src:"长安秋望",bai:"南山和秋色，气势一般高。",soft:"秋色是看出来的气势。你抬起头的样子，也是。",season:"秋",
+ en_text:"The southern hills and the autumn colors — two heights that match each other.",en_who:"Du Mu",en_src:"Autumn View from Chang'an",en_bai:"Hills and autumn, equal height.",en_soft:"Autumn's grandeur is something you see. The way you lift your head has its own."},
+{text:"萧萧远树疏林外，一半秋山带夕阳",who:"寇准",src:"书河上亭壁",bai:"萧萧远树疏林外，一半秋山映着夕阳。",soft:"秋天最好看的时刻，是夕阳染上那一半山。你的黄昏也快到了。",season:"秋",
+ en_text:"Beyond the sparse trees rustling far off, half the autumn hills carry the setting sun.",en_who:"Kou Zhun",en_src:"Written on the Pavilion Wall by the River",en_bai:"Half a hillside of sunset.",en_soft:"Autumn's finest hour is the sunset coloring half the mountain. Your dusk is coming too."},
+/* ---- 冬（三） ---- */
+{text:"岁暮阴阳催短景，天涯霜雪霁寒宵",who:"杜甫",src:"阁夜",bai:"年末白昼渐短，天涯霜雪初晴的寒夜。",soft:"昼短夜长的日子，适合早点收工，暖一暖。",season:"冬",
+ en_text:"Year's end hurries the shortening days; frost and snow clear over the cold night at the edge of the sky.",en_who:"Du Fu",en_src:"Night in the Pavilion",en_bai:"Short days, cold clear nights.",en_soft:"In short-day months, it is fine to finish early and warm yourself."},
+{text:"明月照积雪，北风劲且哀",who:"谢灵运",src:"岁暮",bai:"明月照着积雪，北风强劲而悲凉。",soft:"寒夜里的月光最干净。你若睡不着，就看一眼雪和月。",season:"冬",
+ en_text:"Bright moon on piled snow; the north wind strong and mournful.",en_who:"Xie Lingyun",en_src:"Year's End",en_bai:"Moon, snow, cold wind.",en_soft:"The moonlight on a cold night is the cleanest thing there is. If sleep will not come, look at the snow and moon once."},
+{text:"终南阴岭秀，积雪浮云端",who:"祖咏",src:"终南望余雪",bai:"终南山北岭秀美，积雪好像浮在云端。",soft:"远山上的雪，看着就让人心里安静。找个远方看看吧。",season:"冬",
+ en_text:"The shaded ridge of Zhongnan is fair; its snow drifts above the clouds.",en_who:"Zu Yong",en_src:"Gazing at the Remaining Snow on Zhongnan",en_bai:"Snow floating above clouds.",en_soft:"Snow on a distant mountain quiets the heart just by looking. Find yourself a distance to gaze at."},
+{text:"十月江南天气好，可怜冬景似春华",who:"白居易",src:"早冬",bai:"十月江南天气好，冬景美得像春天。",soft:"冬天也可以像春天。好坏不在季节，在你愿意怎么看。",season:"冬",
+ en_text:"October in the south is fine weather; the winter scene is lovely as spring.",en_who:"Bai Juyi",en_src:"Early Winter",en_bai:"Winter wearing spring's face.",en_soft:"Winter can look like spring. The season matters less than how you choose to see it."},
+{text:"风一更，雪一更，聒碎乡心梦不成",who:"纳兰性德",src:"长相思",bai:"风一阵，雪一阵，吵得思乡的心睡不成。",soft:"风雪夜里想家，是人之常情。天亮后打个电话回去，就好了。",season:"冬",
+ en_text:"Wind for one watch, snow for one watch, rattling the homesick heart so sleep will not come.",en_who:"Nalan Xingde",en_src:"Everlasting Longing",en_bai:"Wind, snow, homesickness.",en_soft:"Missing home on a snowy night is only human. Call home when day breaks — it will ease."},
+{text:"砌下落梅如雪乱，拂了一身还满",who:"李煜",src:"清平乐",bai:"阶下落梅如雪纷乱，拂去一身又落满。",soft:"有些事像落梅，拂不尽。那就让它落一会儿，春天会收拾。",season:"冬",
+ en_text:"Plum petals fall by the steps like confused snow; brushed off, they cover me again.",en_who:"Li Yu",en_src:"Pure Serene Music",en_bai:"Petals that keep falling.",en_soft:"Some things fall like plum petals and cannot be brushed away. Let them fall a while — spring will tidy up."},
+{text:"天将暮，雪乱舞，半梅花半飘柳絮",who:"马致远",src:"寿阳曲·江天暮雪",bai:"天快黑了，雪乱舞，一半像梅花一半像柳絮。",soft:"雪有雪的舞法，你也有你的。天黑了正好回家。",season:"冬",
+ en_text:"Dusk is falling, snow dances wildly — half plum blossom, half willow fluff.",en_who:"Ma Zhiyuan",en_src:"Shouyang Song · Snow at Dusk over the River",en_bai:"Dancing snow at dusk.",en_soft:"Snow has its own dance, and so do you. When dusk falls, it is time to go home."},
+{text:"雪里已知春信至，寒梅点缀琼枝腻",who:"李清照",src:"渔家傲",bai:"雪里已传来春的消息，寒梅点缀在如玉的枝头。",soft:"雪最厚的时候，春信已在路上。你难的时候，转机也在。",season:"冬",
+ en_text:"In the snow the news of spring already comes; cold plum decorates the jade-like branches.",en_who:"Li Qingzhao",en_src:"Pride of Fisherman",en_bai:"Snow, and a hint of spring.",en_soft:"When the snow is deepest, spring's message is already on the way. When you are at your hardest, a turn is coming too."},
+{text:"欲渡黄河冰塞川，将登太行雪满山",who:"李白",src:"行路难",bai:"想渡黄河冰塞河道，想登太行雪满山。",soft:"路被堵住的时候，李白也停过。但下一句是：长风破浪会有时。",season:"冬",
+ en_text:"Wanting to cross the Yellow River, ice blocks the stream; to climb the Taihang, snow fills the hills.",en_who:"Li Bai",en_src:"Hard Is the Way",en_bai:"Blocked roads, heavy snow.",en_soft:"Even Li Bai stopped when the road was blocked. But the next line is: the time for breaking through will come."},
+{text:"应念岭海经年，孤光自照，肝肺皆冰雪",who:"张孝祥",src:"念奴娇·过洞庭",bai:"回想岭海一年，只有孤月照我，肝肺都像冰雪一样清白。",soft:"一个人撑过来的日子，月光都看着。清白地走过，就是你的勋章。",season:"冬",
+ en_text:"A year by the southern seas; the lone moon lights me, and my heart is all ice and snow.",en_who:"Zhang Xiaoxiang",en_src:"Charm of a Maiden Singer · Crossing Lake Dongting",en_bai:"Lone moon, clear heart.",en_soft:"The days you carried alone were watched by the moon. Walking through them with a clear heart is your medal."}
 ];
 
 
@@ -392,8 +478,8 @@ document.addEventListener('touchstart', function onceT(){
 
 /* ============ 语言 ============ */
 const UI = {
-  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", yao:"药柜 · 按心事取一帖", fav:"我的集帖册", noFav:"还没有收藏 · 在帖子上点 ♥ 收藏", favAdd:"♥ 收藏此帖", favAdded:"♥ 已收藏", favCancel:"取消收藏", exportAll:"导出全部", copied:"已复制", all:"全部", nextPost:"换一帖", themes:["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志","疲惫","忙碌","喜悦","静心","归乡","离别"], foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
-  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", yao:"Herbal cabinet · pick a post by your mood", fav:"My collection", noFav:"Nothing collected yet · tap ♥ on a post", favAdd:"♥ Collect", favAdded:"♥ Collected", favCancel:"Remove", exportAll:"Export all", copied:"Copied", all:"All", nextPost:"Next post", themes:["Ease","Warmth","Longing","Landscape","Plants","Time","Wine & Tea","Solitude","Night","Aspiration","Tiredness","Busyness","Joy","Stillness","Homecoming","Farewell"], foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
+  zh:{period:["晨起","午后","黄昏","夜深"], music:"♪ 音乐", soundOn:"♪ 开", soundOff:"♪ 关", reply:"你的回应", hint:"写下回应，回车或点发送——古人会回你一句", sent:"已回应 · 古人已收到", saved:"已留下 · 此帖已记", how:"使用说明", clear:"清空重聊", clear2:"再点一次确认（旧对话已存档）", archived:"旧对话已存入存档", history:"对话存档", empty:"暂无存档 · 回应过的对话会存在这里", rounds:"轮", yao:"药柜 · 按心事取一帖", fav:"我的集帖册", noFav:"还没有收藏 · 在帖子上点 ♥ 收藏", favAdd:"♥ 收藏此帖", favAdded:"♥ 已收藏", favCancel:"取消收藏", exportAll:"导出全部", copied:"已复制", all:"全部", nextPost:"换一帖", share:"📤 分享此帖", shareSave:"保存分享卡", themes:["闲适","温暖","思念","山水","草木","时光","酒茶","孤独","夜晚","励志","疲惫","忙碌","喜悦","静心","归乡","离别"], foot:"人间有味是清欢 · 单文件 · 零追踪 · 数据仅存本机"},
+  en:{period:["Dawn","Afternoon","Dusk","Late night"], music:"♪ Music", soundOn:"♪ On", soundOff:"♪ Off", reply:"Your reply", hint:"Type a reply and press enter or send — the ancient one will answer", sent:"Replied · received", saved:"Kept · noted", how:"Guide", clear:"Clear & retalk", clear2:"Tap again to confirm (old talk archived)", archived:"Old talk archived", history:"Talk archive", empty:"No archive yet · replied talks will be kept here", rounds:"rounds", yao:"Herbal cabinet · pick a post by your mood", fav:"My collection", noFav:"Nothing collected yet · tap ♥ on a post", favAdd:"♥ Collect", favAdded:"♥ Collected", favCancel:"Remove", exportAll:"Export all", copied:"Copied", all:"All", nextPost:"Next post", share:"📤 Share this post", shareSave:"Save share card", themes:["Ease","Warmth","Longing","Landscape","Plants","Time","Wine & Tea","Solitude","Night","Aspiration","Tiredness","Busyness","Joy","Stillness","Homecoming","Farewell"], foot:"Pure joy in daily life · single file · zero tracking · data stays local"}
 };
 function t(k){ return (UI[lang] || UI.zh)[k]; }
 function toggleLang(){ lang = lang === 'zh' ? 'en' : 'zh'; try{ localStorage.setItem('qjLang', lang); }catch(e){} render(); }
@@ -541,6 +627,7 @@ function render(){
     </div>
     <div style="text-align:center;margin:12px 0 2px">
       <button class="chip" id="favBtn" onclick="toggleFav(${POSTS.indexOf(p)})">${loadFav().indexOf(POSTS.indexOf(p)) >= 0 ? t("favAdded") : t("favAdd")}</button>
+      <button class="chip" onclick="shareCard()">${t("share")}</button>
     </div>
     <div class="reply">
       <div class="t">${t("reply")}${talk.turns.length ? '（' + turnCount + '/5）' : ''}</div>
@@ -704,8 +791,87 @@ function renderFav(){
   document.getElementById("card").innerHTML = h;
   window.scrollTo({top:0});
 }
-function exportFav(){
-  const fav = loadFav();
+/* ============ 开屏跳过 ============ */
+function skipSplash(){
+  const s = document.getElementById('splash');
+  if(s) s.style.display = 'none';
+}
+/* ============ 今日一帖分享卡（canvas） ============ */
+function shareCard(){
+  const p = todayPost();
+  const W = 900, H = 1420;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  // 米黄渐变底
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#f7eeda'); g.addColorStop(1, '#f0e0c0');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // 边框
+  ctx.strokeStyle = '#b8914f'; ctx.lineWidth = 5;
+  ctx.strokeRect(22, 22, W - 44, H - 44);
+  ctx.strokeStyle = '#8a6a35'; ctx.lineWidth = 1;
+  ctx.strokeRect(34, 34, W - 68, H - 68);
+  ctx.textAlign = 'center';
+  // 顶部
+  ctx.fillStyle = '#7a5c1e';
+  ctx.font = '28px KaiTi,STKaiti,SimSun';
+  ctx.fillText('清欢 · GentleJoy · 人间有味是清欢', W / 2, 92);
+  // 季节标
+  ctx.fillStyle = '#a8864f';
+  ctx.font = '24px KaiTi,STKaiti,SimSun';
+  ctx.fillText('—— ' + p.season + ' ——', W / 2, 148);
+  // 竖排诗句（右侧起单列）
+  const chars = p.text.split('');
+  ctx.fillStyle = '#3e2f1d';
+  ctx.font = '52px KaiTi,STKaiti,SimSun';
+  let y = 230;
+  for(const ch of chars){
+    ctx.fillText(ch, W / 2, y);
+    y += 64;
+  }
+  // 出处
+  ctx.fillStyle = '#7a5c1e';
+  ctx.font = '26px KaiTi,STKaiti,SimSun';
+  ctx.fillText('—— ' + p.who + '《' + p.src + '》', W / 2, y + 30);
+  // 白话（换行）
+  ctx.fillStyle = '#5a4a2a';
+  ctx.font = '24px SimSun,SimHei';
+  const wrap = function(txt, maxW){
+    const lines = []; let line = '';
+    for(const ch of txt){
+      if(ctx.measureText(line + ch).width > maxW){ lines.push(line); line = ch; }
+      else line += ch;
+    }
+    if(line) lines.push(line);
+    return lines;
+  };
+  let yy = y + 100;
+  for(const ln of wrap(p.bai, 700)){ ctx.fillText(ln, W / 2, yy); yy += 38; }
+  // soft 引文（楷体斜体感）
+  ctx.fillStyle = '#8a6a35';
+  ctx.font = '23px KaiTi,STKaiti,SimSun';
+  yy += 18;
+  for(const ln of wrap(p.soft, 660)){ ctx.fillText('「' + ln + '」', W / 2, yy); yy += 36; }
+  // 底部
+  ctx.fillStyle = '#8a6a35';
+  ctx.font = '26px SimSun';
+  ctx.fillText('永远的兰兰 · Lanlan Eternal', W / 2, H - 120);
+  ctx.font = '20px SimSun';
+  ctx.fillStyle = '#a08a5f';
+  ctx.fillText('podcatcher962.github.io/GentleJoy', W / 2, H - 80);
+  const dataUrl = cv.toDataURL('image/png');
+  const card = document.getElementById('card');
+  card.innerHTML = `<div style="text-align:center">
+    <img src="${dataUrl}" style="max-width:100%;border:1px solid var(--line);border-radius:8px" alt="分享卡">
+    <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a class="go" style="text-decoration:none;border:1px solid var(--gold);color:var(--gold);border-radius:20px;padding:7px 22px" download="qinghuan_share.png" href="${dataUrl}">💾 ${t("shareSave")}</a>
+      <a class="go" style="text-decoration:none;border:1px solid var(--line);color:var(--dim);border-radius:20px;padding:7px 22px" onclick="render()">← ${lang==='zh'?'返回':'Back'}</a>
+    </div>
+  </div>`;
+  window.scrollTo({top:0});
+}
+function exportFav(){  const fav = loadFav();
   const lines = [];
   for(const idx of fav){
     const p = POSTS[idx];
